@@ -1,3 +1,3 @@
-# {NAME}
+# Raven Client
 
-DESCRIPTION
+A Minecraft Client for the Sony PlayStation Portable
