@@ -355,3 +355,6 @@ Debug
 *.SFO
 *.prx
 *.elf
+
+include
+lib
