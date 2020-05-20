@@ -38,6 +38,7 @@ int main() {
 		Platform::platformUpdate();
 
 
+
 		//Note: Should actually count this out - but will do
 		sceKernelDelayThread(50 * 1000);
 	}

@@ -26,6 +26,9 @@ namespace Minecraft::Client {
 		int connState;
 
 	private:
+
+		void getStatus();
+
 		bool running;
 	};
 
