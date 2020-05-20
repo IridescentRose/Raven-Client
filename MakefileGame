@@ -1,5 +1,7 @@
 TARGET = Raven-Client
-OBJS = src/Main.o 
+OBJS = src/Client.o \
+src/Utils.o \
+src/Main.o 
 
 INCDIR = $(PSPPATH)/include
 INCDIR += ./include
