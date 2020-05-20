@@ -67,6 +67,8 @@
     <NMakeCleanCommandLine>clean.bat</NMakeCleanCommandLine>
     <NMakeReBuildCommandLine>rebuild.bat</NMakeReBuildCommandLine>
     <NMakePreprocessorDefinitions>RAVEN_CLIENT_DEBUG;WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <IncludePath>C:\pspsdk\psp\sdk\include;C:\pspsdk\psp\include;C:\Users\Iride\Desktop\Raven-Client\include;$(IncludePath)</IncludePath>
+    <AdditionalOptions>/std:c++17</AdditionalOptions>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <NMakeBuildCommandLine>build.bat</NMakeBuildCommandLine>
@@ -89,6 +91,7 @@
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
