@@ -29,6 +29,8 @@ namespace Minecraft::Client {
 
 		void getStatus();
 
+		void login();
+
 		bool running;
 	};
 
