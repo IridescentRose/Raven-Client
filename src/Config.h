@@ -5,6 +5,7 @@
 struct ClientConfig {
 	uint16_t	port;
 	std::string ip;
+	std::string username;
 };
 
 extern ClientConfig g_Config;

@@ -37,6 +37,16 @@ int main() {
 	while (g_Client->isRunning()) {
 		Platform::platformUpdate();
 
+		try {
+			g_Client->update();
+			g_Client->draw();
+		}
+		catch (std::runtime_error e) {
+			utilityPrint(e.what(), LOGGER_LEVEL_ERROR);
+
+			sceKernelDelayThread(1000 * 1000 * 3);
+			Platform::exitPlatform();
+		}
 
 
 		//Note: Should actually count this out - but will do

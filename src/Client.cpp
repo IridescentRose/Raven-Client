@@ -47,6 +47,11 @@ namespace Minecraft::Client {
 		}
 		else {
 			//If it's not alive - we have options
+			utilityPrint("Lost connection!", LOGGER_LEVEL_WARN);
+			utilityPrint("Attempting Reconnect!", LOGGER_LEVEL_WARN);
+			if (!Network::g_NetworkDriver.Connect(g_Config.port, g_Config.ip.c_str(), false)) {
+				throw std::runtime_error("Fatal: Could not connect to server!");
+			}
 		}
 	}
 	void Client::draw()
