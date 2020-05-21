@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Utils.h"
+#include <Utilities/Thread.h>
 
 namespace Minecraft::Client {
 
@@ -31,7 +32,10 @@ namespace Minecraft::Client {
 
 		void login();
 
+		static int thread_network(unsigned int i, void* a);
+
 		bool running;
+		Thread* thr;
 	};
 
 	extern Client* g_Client;
