@@ -2,6 +2,7 @@
 #include <json/json.h>
 #include <Network/NetworkDriver.h>
 #include "Config.h"
+#include "Internal/InternalClient.h"
 #include <psprtc.h>
 #include "Protocol/1-12-2.h"
 using namespace Minecraft::Client::Protocol;
@@ -33,6 +34,9 @@ namespace Minecraft::Client {
 			throw std::runtime_error("Fatal: Could not connect to server!");
 		}
 
+		Internal::g_InternalClient = new Internal::InternalClient();
+		Internal::g_InternalClient->start();
+
 		connState = CONNECTION_STATE_HANDSHAKE;
 		//We need to send a handshake - get status
 		getStatus();
@@ -46,11 +50,11 @@ namespace Minecraft::Client {
 	}
 	void Client::update()
 	{
-		
+		Internal::g_InternalClient->update();
 	}
 	void Client::draw()
 	{
-
+		Internal::g_InternalClient->draw();
 	}
 
 

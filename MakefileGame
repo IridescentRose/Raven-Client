@@ -1,5 +1,6 @@
 TARGET = Raven-Client
 OBJS = src/Client.o \
+src/Internal/InternalClient.o \
 src/Utils.o \
 src/Config.o \
 src/Protocol/1-12-2.o \
