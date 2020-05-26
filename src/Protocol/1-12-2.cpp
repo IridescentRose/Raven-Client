@@ -109,6 +109,7 @@ namespace Minecraft::Client::Protocol {
 		//We should respond with a client settings
 		//TODO: USE OPTIONS!
 		PacketOut* client_settings = new PacketOut();
+		client_settings->ID = 0x04;
 		encodeStringNonNull("en_us", *client_settings);
 		encodeByte(2, *client_settings); //Render Distance!
 		encodeByte(0, *client_settings); //CHAT MODE 0 default
@@ -153,7 +154,19 @@ namespace Minecraft::Client::Protocol {
 	int player_list_item_handler(PacketIn* p) { utilityPrint("PLAYER_LIST_ITEM", LOGGER_LEVEL_WARN); sceKernelDelayThread(1000 * 5 * 1000); sceKernelExitGame(); return 0; }
 	int player_position_and_look_handler(PacketIn* p) { utilityPrint("PLAYER_POSITION_AND_LOOK", LOGGER_LEVEL_WARN); return 0; }
 	int use_bed_handler(PacketIn* p) { utilityPrint("USE_BED", LOGGER_LEVEL_WARN); return 0; }
-	int unlock_recipes_handler(PacketIn* p) { utilityPrint("UNLOCK_RECIPES", LOGGER_LEVEL_WARN); return 0; }
+	
+	int unlock_recipes_handler(PacketIn* p) {
+		utilityPrint("UNLOCK_RECIPES", LOGGER_LEVEL_WARN);
+		utilityPrint("NOT FULLY IMPLEMENTED!!!", LOGGER_LEVEL_WARN);
+
+		uint8_t action = decodeByte(*p);
+		if (p == 0) {
+			utilityPrint("RECIPE INIT", LOGGER_LEVEL_TRACE);
+		}
+
+		return 0;
+	}
+	
 	int destroy_entities_handler(PacketIn* p) { utilityPrint("DESTROY_ENTITIES", LOGGER_LEVEL_WARN); return 0; }
 	int remove_entity_effect_handler(PacketIn* p) { utilityPrint("REMOVE_ENTITY_EFFECT", LOGGER_LEVEL_WARN); return 0; }
 	int resource_pack_send_handler(PacketIn* p) { utilityPrint("RESOURCE_PACK_SEND", LOGGER_LEVEL_WARN); return 0; }
