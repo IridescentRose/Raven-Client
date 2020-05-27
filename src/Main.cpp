@@ -2,6 +2,9 @@
 #include <Graphics/RendererCore.h>
 #include <Utilities/Logger.h>
 #include "Client.h"
+#include <Utilities/Logger.h>
+#include <Utilities/Timer.h>
+#include <Graphics/2D/SpriteBase.h>
 
 PSP_MODULE_INFO("Raven Client", 0, 1, 0);
 PSP_MAIN_THREAD_ATTR(THREAD_ATTR_VFPU | THREAD_ATTR_USER);
@@ -12,47 +15,66 @@ using namespace Stardust::Utilities;
 using namespace Stardust::Graphics;
 using namespace Minecraft::Client;
 
+void doSplash() {
+	//2D Mode initialization
+	sceGumMatrixMode(GU_PROJECTION);
+	sceGumLoadIdentity();
+	sceGumOrtho(0, 480, 272, 0, -30, 30);
+	sceGumMatrixMode(GU_VIEW);
+	sceGumLoadIdentity();
+	sceGumMatrixMode(GU_MODEL);
+	sceGumLoadIdentity();
+
+	Stardust::Graphics::g_RenderCore.SetClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+	//splash screen!
+	Stardust::Graphics::Texture* tex = Stardust::Graphics::TextureUtil::LoadPng("./assets/minecraft/textures/gui/title/mojang.png");
+
+	Stardust::Graphics::Render2D::Sprite* sprite = new Stardust::Graphics::Render2D::Sprite(tex);
+	sprite->SetPosition(240, 136);
+	sprite->Scale(1.0f, 1.0f);
+
+	float time = 3.0f;
+	Stardust::Utilities::Timer* timer = new Stardust::Utilities::Timer();
+	timer->reset();
+
+	Stardust::Graphics::g_RenderCore.SetClearColor(255, 255, 255, 255);
+
+	while (time > 0.0f) {
+		Stardust::Graphics::g_RenderCore.BeginCommands();
+		Stardust::Graphics::g_RenderCore.Clear();
+
+		time -= timer->deltaTime();
+		sprite->Draw();
+
+		Stardust::Graphics::g_RenderCore.EndCommands();
+	}
+
+	delete sprite;
+	delete timer;
+	delete tex;
+}
+#include "State/StateManager.h"
+#include "Menu/MenuState.hpp"
+
 int main() {
 	Platform::initPlatform("Raven-Client");
+	doSplash();
 
-#ifdef RAVEN_CLIENT_DEBUG
-	app_Logger->currentLevel = LOGGER_LEVEL_TRACE;
-	detail::core_Logger->currentLevel = LOGGER_LEVEL_TRACE;
+	StateManager stateManager;
+	stateManager.running = true;
 
-	pspDebugScreenInit();
-	app_Logger->log("Debug Mode Enabled!");
-#endif
+	Minecraft::Menus::MenuState* state = new Minecraft::Menus::MenuState();
+	state->Init();
+	stateManager.ChangeState(state);
 
-	g_Client = new Client();
-	try {
-		g_Client->run();
-	}
-	catch (std::runtime_error e) {
-		utilityPrint(e.what(), LOGGER_LEVEL_ERROR);
-
-		sceKernelDelayThread(1000 * 1000 * 3);
-		Platform::exitPlatform();
+	while (stateManager.running)
+	{
+		stateManager.Update();
+		stateManager.Draw();
 	}
 
-	while (g_Client->isRunning()) {
-		Platform::platformUpdate();
+	sceKernelExitGame();
 
-		try {
-			g_Client->update();
-			g_Client->draw();
-		}
-		catch (std::runtime_error e) {
-			utilityPrint(e.what(), LOGGER_LEVEL_ERROR);
-
-			sceKernelDelayThread(1000 * 1000 * 3);
-			Platform::exitPlatform();
-		}
-
-
-		//Note: Should actually count this out - but will do
-		sceKernelDelayThread(50 * 1000);
-	}
-
-	Platform::exitPlatform();
 	return 0;
 }

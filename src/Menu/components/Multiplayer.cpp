@@ -2,6 +2,8 @@
 
 #include <Network/NetworkDriver.h>
 #include <Graphics/Dialogs.h>
+#include "../../Client.h"
+#include "../../Config.h"
 
 namespace Minecraft::Menus{
     
@@ -104,39 +106,7 @@ namespace Minecraft::Menus{
     }
 	void MenuState::optionsMultiplayerScreenUpdate(StateManager* sManager){
 
-		if (!tryConnect && !connected) {
-			//Network::Init();
-
-			//bool res = Network::dialogConnect();
-			connected = false;
-			tryConnect = true;
-			
-			if (connected) {
-				//Ask for username
-				//GET USER
-
-				unsigned short test2[16];
-				unsigned short opis2[9] = { 'U', 's', 'e', 'r', 'n', 'a', 'm', 'e', '\0' };
-				if (ShowOSK(opis2, test2, 16) != -1)
-				{
-					for (int j = 0; test2[j]; j++)
-					{
-						unsigned c = test2[j];
-
-						if (32 <= c && c <= 127) // print ascii only
-							username += c;
-					}
-
-				}
-
-				//TODO: STORE USERNAME!!!
-			}
-			else {
-				//Network::Cleanup(); //Fixes crashing.
-			}
-			
-		}
-
+		
 if(KeyPressed(PSP_CTRL_UP)){
                     selectPosY--;
 
@@ -189,21 +159,76 @@ if(KeyPressed(PSP_CTRL_UP)){
             }
 			if (selectPosX == 1 && selectPosY == 0) {
 
-				unsigned short test2[15];
-				unsigned short opis2[11] = { 'I', 'P', ' ', 'A', 'd', 'd', 'r', 'e', 's', 's', '\0' };
-				if (ShowOSK(opis2, test2, 15) != -1)
-				{
-					for (int j = 0; test2[j]; j++)
-					{
-						unsigned c = test2[j];
+                {
+				    unsigned short test2[15];
+				    unsigned short opis2[11] = { 'I', 'P', ' ', 'A', 'd', 'd', 'r', 'e', 's', 's', '\0' };
+				    if (ShowOSK(opis2, test2, 15) != -1)
+				    {
+				    	for (int j = 0; test2[j]; j++)
+				    	{
+				    		unsigned c = test2[j];
 
-						if (32 <= c && c <= 127) // print ascii only
-							ipaddr += c;
-					}
+				    		if (32 <= c && c <= 127) // print ascii only
+				    			ipaddr += c;
+				    	}
 
-				}
+				    }
+                    g_Config.ip = ipaddr;
+                }
+                unsigned short test2[16];
+                unsigned short opis2[9] = { 'U', 's', 'e', 'r', 'n', 'a', 'm', 'e', '\0' };
+                if (ShowOSK(opis2, test2, 16) != -1)
+                {
+                    for (int j = 0; test2[j]; j++)
+                    {
+                        unsigned c = test2[j];
 
-				
+                        if (32 <= c && c <= 127) // print ascii only
+                            username += c;
+                    }
+                    g_Config.username = username;
+                }
+
+                //BEGIN!
+#ifdef RAVEN_CLIENT_DEBUG
+                app_Logger->currentLevel = LOGGER_LEVEL_TRACE;
+                detail::core_Logger->currentLevel = LOGGER_LEVEL_TRACE;
+
+                pspDebugScreenInit();
+                app_Logger->log("Debug Mode Enabled!");
+#endif
+
+                Client::g_Client = new Client::Client();
+                try {
+                    Client::g_Client->run();
+                }
+                catch (std::runtime_error e) {
+                    utilityPrint(e.what(), LOGGER_LEVEL_ERROR);
+
+                    sceKernelDelayThread(1000 * 1000 * 3);
+                    Platform::exitPlatform();
+                }
+
+                while (Client::g_Client->isRunning()) {
+                    Platform::platformUpdate();
+
+                    try {
+                        Client::g_Client->update();
+                        Client::g_Client->draw();
+                    }
+                    catch (std::runtime_error e) {
+                        utilityPrint(e.what(), LOGGER_LEVEL_ERROR);
+
+                        sceKernelDelayThread(1000 * 1000 * 3);
+                        Platform::exitPlatform();
+                    }
+
+
+                    //Note: Should actually count this out - but will do
+                    sceKernelDelayThread(50 * 1000);
+                }
+
+                Platform::exitPlatform();
 			}
         }
     }
