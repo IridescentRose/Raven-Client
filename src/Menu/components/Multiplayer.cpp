@@ -159,6 +159,8 @@ if(KeyPressed(PSP_CTRL_UP)){
             }
 			if (selectPosX == 1 && selectPosY == 0) {
 
+
+                parseServerConfig();
                 {
 				    unsigned short test2[15];
 				    unsigned short opis2[11] = { 'I', 'P', ' ', 'A', 'd', 'd', 'r', 'e', 's', 's', '\0' };
@@ -188,6 +190,8 @@ if(KeyPressed(PSP_CTRL_UP)){
                     }
                     g_Config.username = username;
                 }
+
+                CleanUp();
 
                 //BEGIN!
 #ifdef RAVEN_CLIENT_DEBUG

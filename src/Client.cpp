@@ -17,7 +17,6 @@ namespace Minecraft::Client {
 	}
 	void Client::run()
 	{
-		parseServerConfig();
 		running = true;
 		utilityPrint("Starting Client...", LOGGER_LEVEL_INFO);
 		if (!Network::g_NetworkDriver.Init()) {
