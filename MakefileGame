@@ -4,11 +4,29 @@ src/Internal/InternalClient.o \
 src/Utils.o \
 src/Config.o \
 src/Protocol/1-12-2.o \
+src/Common/Translations.o \
+src/Common/Options.o \
+src/Menu/MenuState.o \
+src/Menu/components/TitleScreen.o \
+src/Menu/components/PlayGenerate.o \
+src/Menu/components/PlaySelect.o \
+src/Menu/components/LanguageScreen.o \
+src/Menu/components/OptionsMainScreen.o \
+src/Menu/components/OptionsSkinCustomization.o \
+src/Menu/components/ResourcePacks.o \
+src/Menu/components/OptionsMusicScreen.o\
+src/Menu/components/ChatScreen.o\
+src/Menu/components/Multiplayer.o\
+src/Menu/components/Controller.o\
+src/Menu/components/Snooper.o\
+src/Menu/components/VideoScreen.o\
+src/Menu/LoadingScreen.o\
+src/Menu/components/Panorama.o \
 src/Main.o 
 
 INCDIR = $(PSPPATH)/include
 INCDIR += ./include
-CFLAGS = -O3 -G0 -g3 -mpreferred-stack-boundary=4 -ffast-math -gdwarf-2 -DRAVEN_CLIENT_DEBUG
+CFLAGS = -O3 -G0 -g3 -mpreferred-stack-boundary=4 -ffast-math -gdwarf-2 -DRAVEN_CLIENT_DEBUG -DMC_PSP
 CXXFLAGS = $(CFLAGS) -std=gnu++17 -fno-rtti 
 ASFLAGS = $(CFLAGS)
 
