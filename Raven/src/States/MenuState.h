@@ -4,6 +4,7 @@
 #include <GFX/3D/Camera.h>
 #include <GFX/3D/Skybox.h>
 #include <Utilities/Timer.h>
+#include <GFX/UI/TextRenderer.h>
 
 using namespace Stardust;
 using namespace Stardust::Core;
@@ -26,4 +27,9 @@ public:
 private:
 	GFX::Render3D::Camera* cam;
 	GFX::Render3D::Skybox* panorama;
+
+	unsigned int logoTexture;
+	GFX::Render2D::Sprite* logoSprite;
+
+	GFX::UI::TextRenderer* textRender;
 };
