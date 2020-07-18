@@ -21,7 +21,7 @@ void MenuState::init()
 	}
 
 	Utilities::g_AppTimer.deltaTime();
-	panorama = new GFX::Render3D::Skybox(tex, 1.0f);
+	panorama = new GFX::Render3D::Skybox(tex, 0.5f);
 }
 
 void MenuState::cleanup()
@@ -44,10 +44,8 @@ void MenuState::resume()
 void MenuState::update(GameStateManager* st)
 {
 	double dt =	Utilities::g_AppTimer.deltaTime();
-	//cam->rot.x += dt * (360.0f / 180.0f);
-	//cam->rot.y = sinf((cam->rot.x + 90) / 180 * 3.14159) * 30.0f + 5.0f;
-	cam->rot.x = 0;
-	cam->rot.y += -30 * dt;
+	cam->rot.x += dt * (360.0f / 180.0f);
+	cam->rot.y = sinf((cam->rot.x + 90) / 180 * 3.14159) * 30.0f + 5.0f;
 	cam->update();
 }
 
