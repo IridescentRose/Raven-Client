@@ -40,12 +40,12 @@ void Logo::update(Core::GameStateManager* st)
 {
 	timer.deltaTime();
 
-	if(timer.elapsed() >= 5.0f){
+	//if(timer.elapsed() >= 5.0f){
 		//Switch state to menu.
 		MenuState* menu = new MenuState();
 		menu->init();
 		st->changeState(menu);
-	}
+	//}
 }
 
 void Logo::draw(Core::GameStateManager* st)

@@ -1,6 +1,8 @@
 #pragma once
 #include <Core/GameState.h>
 #include <GFX/2D/Sprite.h>
+#include <GFX/3D/Camera.h>
+#include <GFX/3D/Skybox.h>
 #include <Utilities/Timer.h>
 
 using namespace Stardust;
@@ -20,4 +22,8 @@ public:
 
 	void update(GameStateManager* st);
 	void draw(GameStateManager* st);
+	
+private:
+	GFX::Render3D::Camera* cam;
+	GFX::Render3D::Skybox* panorama;
 };
