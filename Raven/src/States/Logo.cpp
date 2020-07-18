@@ -1,5 +1,5 @@
 #include "Logo.h"
-
+#include "MenuState.h"
 #include <GFX/RenderCore.h>
 Logo::Logo()
 {
@@ -42,17 +42,20 @@ void Logo::update(Core::GameStateManager* st)
 
 	if(timer.elapsed() >= 5.0f){
 		//Switch state to menu.
+		MenuState* menu = new MenuState();
+		menu->init();
+		st->changeState(menu);
 	}
 }
 
 void Logo::draw(Core::GameStateManager* st)
 {
-	if(timer.elapsed() / 10.0f <= 1.0f){
-		logoSprite->setColor(1.0f, 1.0f, 1.0f, (float)timer.elapsed() / 10.0f);
-	}else if (timer.elapsed() / 10.0f > 1 && timer.elapsed() < 4){
+	if(timer.elapsed() <= 1.0f){
+		logoSprite->setColor(1.0f, 1.0f, 1.0f, (float)(timer.elapsed()));
+	}else if (timer.elapsed() > 1 && timer.elapsed() < 4){
 		logoSprite->setColor(1.0f, 1.0f, 1.0f, 1.0f);
-	}else if (timer.elapsed() / 10.0f  <= 5.0f){
-		logoSprite->setColor(1.0f, 1.0f, 1.0f, 5.0f - (float)timer.elapsed() / 10.0f);
+	}else if (timer.elapsed()  <= 5.0f){
+		logoSprite->setColor(1.0f, 1.0f, 1.0f, 5.0f - (float)(timer.elapsed()));
 	}
 	logoSprite->draw();
 }
