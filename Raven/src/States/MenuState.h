@@ -5,6 +5,7 @@
 #include <GFX/3D/Skybox.h>
 #include <Utilities/Timer.h>
 #include <GFX/UI/TextRenderer.h>
+#include <GFX/UI/UIButton.h>
 
 using namespace Stardust;
 using namespace Stardust::Core;
@@ -30,6 +31,20 @@ private:
 
 	unsigned int logoTexture;
 	GFX::Render2D::Sprite* logoSprite;
-
 	GFX::UI::TextRenderer* textRender;
+
+	unsigned int widgets;
+	GFX::Render2D::Sprite* unselected;
+	GFX::Render2D::Sprite* selected;
+
+	GFX::Render2D::Sprite* halfUnselected;
+	GFX::Render2D::Sprite* halfSelected;
+
+	GFX::UI::UIButton* quitButton;
+	GFX::UI::UIButton* optionButton;
+
+	GFX::UI::UIButton* sspButton;
+	GFX::UI::UIButton* smpButton;
+	GFX::UI::UIButton* mcrButton;
+
 };
