@@ -22,6 +22,9 @@ void exitHandler() {
 
 void MenuState::init()
 {
+	g_TranslationOBJ.init();
+	g_TranslationOBJ.setTranslation("en_us");
+
 	GFX::UI::textVShift = 3;
 	GFX::g_RenderCore->setClearColor(0.f, 0.f, 0.f, 1.f);
 
@@ -60,23 +63,23 @@ void MenuState::init()
 
 	quitButton = new GFX::UI::UIButton(halfSelected, halfUnselected, { 100, 20 }, textRender, exitHandler);
 	quitButton->setPosition(240 + 52, 232);
-	quitButton->setText("Quit", { 255, 255, 255, 255, TEXT_SIZE, TEXT_RENDERER_CENTER, TEXT_RENDERER_CENTER, 0.0f, true });
+	quitButton->setText(g_TranslationOBJ.getText("menu.quit"), { 255, 255, 255, 255, TEXT_SIZE, TEXT_RENDERER_CENTER, TEXT_RENDERER_CENTER, 0.0f, true });
 
 	optionButton = new GFX::UI::UIButton(halfSelected, halfUnselected, { 100, 20 }, textRender, exitHandler);
 	optionButton->setPosition(240 - 52, 232);
-	optionButton->setText("Options...", { 255, 255, 255, 255, TEXT_SIZE, TEXT_RENDERER_CENTER, TEXT_RENDERER_CENTER, 0.0f, true });
+	optionButton->setText(g_TranslationOBJ.getText("menu.options"), { 255, 255, 255, 255, TEXT_SIZE, TEXT_RENDERER_CENTER, TEXT_RENDERER_CENTER, 0.0f, true });
 
 	sspButton = new GFX::UI::UIButton(selected, unselected, { 200, 20 }, textRender, exitHandler);
 	sspButton->setPosition(240, 136);
-	sspButton->setText("Singleplayer", { 255, 255, 255, 255, TEXT_SIZE, TEXT_RENDERER_CENTER, TEXT_RENDERER_CENTER, 0.0f, true });
+	sspButton->setText(g_TranslationOBJ.getText("menu.singleplayer"), { 255, 255, 255, 255, TEXT_SIZE, TEXT_RENDERER_CENTER, TEXT_RENDERER_CENTER, 0.0f, true });
 
 	smpButton = new GFX::UI::UIButton(selected, unselected, { 200, 20 }, textRender, exitHandler);
 	smpButton->setPosition(240, 164);
-	smpButton->setText("Multiplayer", { 255, 255, 255, 255, TEXT_SIZE, TEXT_RENDERER_CENTER, TEXT_RENDERER_CENTER, 0.0f, true });
+	smpButton->setText(g_TranslationOBJ.getText("menu.multiplayer"), { 255, 255, 255, 255, TEXT_SIZE, TEXT_RENDERER_CENTER, TEXT_RENDERER_CENTER, 0.0f, true });
 
 	mcrButton = new GFX::UI::UIButton(selected, unselected, { 200, 20 }, textRender, exitHandler);
 	mcrButton->setPosition(240, 192);
-	mcrButton->setText("Minecraft Realms", { 255, 255, 255, 255, TEXT_SIZE, TEXT_RENDERER_CENTER, TEXT_RENDERER_CENTER, 0.0f, true });
+	mcrButton->setText(g_TranslationOBJ.getText("menu.online"), { 255, 255, 255, 255, TEXT_SIZE, TEXT_RENDERER_CENTER, TEXT_RENDERER_CENTER, 0.0f, true });
 }
 
 

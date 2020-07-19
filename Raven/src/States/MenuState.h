@@ -6,6 +6,7 @@
 #include <Utilities/Timer.h>
 #include <GFX/UI/TextRenderer.h>
 #include <GFX/UI/UIButton.h>
+#include "../Common/Translation.h"
 
 using namespace Stardust;
 using namespace Stardust::Core;
