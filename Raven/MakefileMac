@@ -1,0 +1,24 @@
+TARGET=../Raven-Client
+TEST_OBJS = src/Main.o \
+src/Application.o \
+src/States/Logo.o \
+src/States/MenuState.o \
+src/Common/Translation.o \
+
+CC = clang
+CXX = clang++
+CFLAGS = -O3 -ffast-math -pthread -DCURRENT_PLATFORM=PLATFORM_NIX -I../Stardust-Engine/Platform/include -I../Stardust-Engine/Core/include -I../Stardust-Engine/Utilities/include -I../Stardust-Engine/Deps/include
+CXXFLAGS = $(CFLAGS) -Weffc++ -std=c++17
+# brew install glfw3 sfml
+LDFLAGS = -L../Stardust-Engine/Stardust/lib/nix -L/usr/local/lib/ -lstardust-core -lstardust-utilities -lstardust-platform -lglfw -framework IOKit -framework Cocoa -framework OpenGL -lsfml-audio -lc++
+
+all: $(TARGET) 
+
+$(TARGET): $(TEST_OBJS)
+	$(CXX) $(INCDIR) $(LDFLAGS) -o $@ $(TEST_OBJS)
+
+%.o: %.c
+	$(CXX) $(INCDIR) -c -o $@ $< $(CXXFLAGS)
+
+clean:
+	rm -f $(TEST_OBJS) $(TARGET)
