@@ -24,6 +24,18 @@ Audio::AudioClip* btn;
 void exitHandler() {
 	btn->Stop();
 	btn->Play();
+
+	exit(0);
+}
+
+void sspHandler() {
+	btn->Stop();
+	btn->Play();
+}
+
+void smpHandler() {
+	btn->Stop();
+	btn->Play();
 }
 
 void MenuState::init()
@@ -75,11 +87,11 @@ void MenuState::init()
 	optionButton->setPosition(240 - 52, 232);
 	optionButton->setText(g_TranslationOBJ.getText("menu.options"), { 255, 255, 255, 255, TEXT_SIZE, TEXT_RENDERER_CENTER, TEXT_RENDERER_CENTER, 0.0f, true });
 
-	sspButton = new GFX::UI::UIButton(selected, unselected, { 200, 20 }, textRender, exitHandler);
+	sspButton = new GFX::UI::UIButton(selected, unselected, { 200, 20 }, textRender, sspHandler);
 	sspButton->setPosition(240, 136);
 	sspButton->setText(g_TranslationOBJ.getText("menu.singleplayer"), { 255, 255, 255, 255, TEXT_SIZE, TEXT_RENDERER_CENTER, TEXT_RENDERER_CENTER, 0.0f, true });
 
-	smpButton = new GFX::UI::UIButton(selected, unselected, { 200, 20 }, textRender, exitHandler);
+	smpButton = new GFX::UI::UIButton(selected, unselected, { 200, 20 }, textRender, smpHandler);
 	smpButton->setPosition(240, 164);
 	smpButton->setText(g_TranslationOBJ.getText("menu.multiplayer"), { 255, 255, 255, 255, TEXT_SIZE, TEXT_RENDERER_CENTER, TEXT_RENDERER_CENTER, 0.0f, true });
 
