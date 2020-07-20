@@ -50,4 +50,6 @@ private:
 	GFX::UI::UIButton* mcrButton;
 
 	Audio::AudioClip* mus;
+
+	int vsel;
 };
