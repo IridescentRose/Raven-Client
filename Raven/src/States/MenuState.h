@@ -7,6 +7,7 @@
 #include <GFX/UI/TextRenderer.h>
 #include <GFX/UI/UIButton.h>
 #include "../Common/Translation.h"
+#include <Audio/AudioClip.h>
 
 using namespace Stardust;
 using namespace Stardust::Core;
@@ -48,4 +49,5 @@ private:
 	GFX::UI::UIButton* smpButton;
 	GFX::UI::UIButton* mcrButton;
 
+	Audio::AudioClip* mus;
 };

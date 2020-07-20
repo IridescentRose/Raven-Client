@@ -4,9 +4,11 @@
 #if CURRENT_PLATFORM == PLATFORM_PSP
 #define TEXT_SIZE 0.5f
 #define CORRECTION_FACTOR 0
+#define SYSTEM_AUDIO_EXT ".bgm"
 #else
 #define TEXT_SIZE 0.75f
 #define CORRECTION_FACTOR 3
+#define SYSTEM_AUDIO_EXT ".ogg"
 #endif
 
 MenuState::MenuState()
@@ -16,8 +18,11 @@ MenuState::MenuState()
 MenuState::~MenuState()
 {
 }
+
+Audio::AudioClip* btn;
 void exitHandler() {
-	exit(0);
+	btn->Stop();
+	btn->Play();
 }
 
 void MenuState::init()
@@ -80,6 +85,11 @@ void MenuState::init()
 	mcrButton = new GFX::UI::UIButton(selected, unselected, { 200, 20 }, textRender, exitHandler);
 	mcrButton->setPosition(240, 192);
 	mcrButton->setText(g_TranslationOBJ.getText("menu.online"), { 255, 255, 255, 255, TEXT_SIZE, TEXT_RENDERER_CENTER, TEXT_RENDERER_CENTER, 0.0f, true });
+
+	mus = new Audio::AudioClip("./assets/music/menu" + std::to_string(rand() % 3 + 1) + SYSTEM_AUDIO_EXT, true);
+	btn = new Audio::AudioClip("./assets/sounds/click.wav", false);
+
+	mus->Play();
 }
 
 
