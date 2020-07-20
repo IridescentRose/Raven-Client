@@ -1,5 +1,6 @@
 #include "MenuState.h"
 #include <GFX/RenderCore.h>
+#include <Utilities/Input.h>
 
 #if CURRENT_PLATFORM == PLATFORM_PSP
 #define TEXT_SIZE 0.5f
@@ -90,6 +91,11 @@ void MenuState::init()
 	btn = new Audio::AudioClip("./assets/sounds/click.wav", false);
 
 	mus->Play();
+	vsel = 0;
+
+	if (Utilities::getCursorPos().x < 0 && Utilities::getCursorPos().y < 0){
+		sspButton->select();
+	}
 }
 
 
@@ -135,6 +141,92 @@ void MenuState::update(GameStateManager* st)
 	mcrButton->update();
 	sspButton->update();
 	smpButton->update();
+
+	bool changeTrigger = false;
+	if (Utilities::KeyPressed(PSP_CTRL_DOWN)) {
+		vsel++;
+
+		if (vsel > 4) {
+			vsel = 4;
+		}
+		changeTrigger = true;
+	}
+	if (Utilities::KeyPressed(PSP_CTRL_UP)) {
+		vsel--;
+
+		if (vsel < 0) {
+			vsel = 0;
+		}
+		changeTrigger = true;
+	}
+
+	if(changeTrigger){
+		switch (vsel) {
+		case 0:
+			sspButton->select();
+			smpButton->unselect();
+			mcrButton->unselect();
+			optionButton->unselect();
+			quitButton->unselect();
+			break;
+
+		case 1:
+			sspButton->unselect();
+			smpButton->select();
+			mcrButton->unselect();
+			optionButton->unselect();
+			quitButton->unselect();
+			break;
+
+		case 2:
+			sspButton->unselect();
+			smpButton->unselect();
+			mcrButton->select();
+			optionButton->unselect();
+			quitButton->unselect();
+			break;
+
+		case 3:
+			sspButton->unselect();
+			smpButton->unselect();
+			mcrButton->unselect();
+			optionButton->select();
+			quitButton->unselect();
+			break;
+
+		case 4:
+			sspButton->unselect();
+			smpButton->unselect();
+			mcrButton->unselect();
+			optionButton->unselect();
+			quitButton->select();
+			break;
+		}
+	}
+
+	if (Utilities::KeyPressed(PSP_CTRL_CROSS)){
+		switch(vsel){
+		case 0:
+			sspButton->click();
+			break;
+
+		case 1:
+			smpButton->click();
+			break;
+
+		case 2:
+			mcrButton->click();
+			break;
+
+		case 3:
+			optionButton->click();
+			break;
+
+		case 4:
+			quitButton->click();
+			break;
+		}
+	}
 }
 
 void MenuState::draw(GameStateManager* st)
