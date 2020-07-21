@@ -3,6 +3,7 @@ OBJS = src/Main.o \
 src/Application.o \
 src/States/Logo.o \
 src/States/MenuState.o \
+src/States/ClientState.o \
 src/Common/Translation.o \
 
 INCDIR = $(PSPPATH)/include

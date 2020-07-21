@@ -1,5 +1,6 @@
 #pragma once
 #include <Core/GameState.h>
+#include "../Client/Client.h"
 
 using namespace Stardust;
 using namespace Stardust::Core;
@@ -20,4 +21,5 @@ public:
 	void draw(GameStateManager* st);
 
 private:
+	Minecraft::Client* client;
 };

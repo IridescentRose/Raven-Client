@@ -1,7 +1,8 @@
 #include "MenuState.h"
 #include <GFX/RenderCore.h>
 #include <Utilities/Input.h>
-
+#include "../Config.h"
+#include "ClientState.h"
 #if CURRENT_PLATFORM == PLATFORM_PSP
 #define TEXT_SIZE 0.5f
 #define CORRECTION_FACTOR 0
@@ -23,20 +24,47 @@ MenuState::~MenuState()
 Audio::AudioClip* btn;
 void exitHandler() {
 	btn->Stop();
-	btn->Play();
+	btn->Play(7);
 
+
+#if CURRENT_PLATFORM == PLATFORM_PSP
+	sceKernelExitGame();
+#else
 	exit(0);
+#endif
 }
 
+bool switchToClient = false;
 void sspHandler() {
 	btn->Stop();
-	btn->Play();
+	btn->Play(7);
+
+	parseClientConfig();
+	g_Config.ip = "127.0.0.1";
+	g_Config.port = 1337;
+
+	//Launch craft server - (PC only for now)
+	//Wait for now
+
+	//Switch State
+	switchToClient = true;
 }
 
 void smpHandler() {
 	btn->Stop();
-	btn->Play();
+	btn->Play(7);
+
+	parseClientConfig();
+	//Switch State
+	switchToClient = true;
 }
+
+void dummyHandler() {
+	btn->Stop();
+	btn->Play(7);
+}
+
+
 
 void MenuState::init()
 {
@@ -83,7 +111,7 @@ void MenuState::init()
 	quitButton->setPosition(240 + 52, 232);
 	quitButton->setText(g_TranslationOBJ.getText("menu.quit"), { 255, 255, 255, 255, TEXT_SIZE, TEXT_RENDERER_CENTER, TEXT_RENDERER_CENTER, 0.0f, true });
 
-	optionButton = new GFX::UI::UIButton(halfSelected, halfUnselected, { 100, 20 }, textRender, exitHandler);
+	optionButton = new GFX::UI::UIButton(halfSelected, halfUnselected, { 100, 20 }, textRender, dummyHandler);
 	optionButton->setPosition(240 - 52, 232);
 	optionButton->setText(g_TranslationOBJ.getText("menu.options"), { 255, 255, 255, 255, TEXT_SIZE, TEXT_RENDERER_CENTER, TEXT_RENDERER_CENTER, 0.0f, true });
 
@@ -95,7 +123,7 @@ void MenuState::init()
 	smpButton->setPosition(240, 164);
 	smpButton->setText(g_TranslationOBJ.getText("menu.multiplayer"), { 255, 255, 255, 255, TEXT_SIZE, TEXT_RENDERER_CENTER, TEXT_RENDERER_CENTER, 0.0f, true });
 
-	mcrButton = new GFX::UI::UIButton(selected, unselected, { 200, 20 }, textRender, exitHandler);
+	mcrButton = new GFX::UI::UIButton(selected, unselected, { 200, 20 }, textRender, dummyHandler);
 	mcrButton->setPosition(240, 192);
 	mcrButton->setText(g_TranslationOBJ.getText("menu.online"), { 255, 255, 255, 255, TEXT_SIZE, TEXT_RENDERER_CENTER, TEXT_RENDERER_CENTER, 0.0f, true });
 
@@ -136,6 +164,7 @@ void MenuState::enter()
 
 void MenuState::pause()
 {
+	mus->Stop();
 }
 
 void MenuState::resume()
@@ -144,6 +173,13 @@ void MenuState::resume()
 
 void MenuState::update(GameStateManager* st)
 {
+	if(switchToClient){
+		ClientState* state = new ClientState();
+		state->init();
+		st->addState(state);
+		return;
+	}
+
 	double dt =	Utilities::g_AppTimer.deltaTime();
 	cam->rot.y += dt * (360.0f / 180.0f);
 	cam->rot.x = sinf((cam->rot.y + 90) / 180 * 3.14159) * 30.0f + 5.0f;
