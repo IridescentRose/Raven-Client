@@ -10,6 +10,9 @@ namespace Minecraft{
 
 		void init();
 		void cleanup();
+
+		void login();
+
 		void testPing();
 		void update();
 		void draw();
