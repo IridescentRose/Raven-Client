@@ -24,4 +24,4 @@ void exportClientConfig(std::string path)
 	f.close();
 }
 
-ClientConfig g_Config = { 25565, "127.0.0.1", "idot", false };
+ClientConfig g_Config = { 25565, "127.0.0.1", "idot" };

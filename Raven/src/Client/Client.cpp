@@ -114,16 +114,8 @@ namespace Minecraft {
 				}
 			}
 
-arbitrarylabel:
 			switch (pIn->ID) {
-			case 0x00:
-				if(g_Config.networkCompression){
-					uint8_t id = 0;
-					pIn->buffer->ReadBEUInt8(id);
-					pIn->ID = id;
-					goto arbitrarylabel;
-				}
-
+			case 0x00:				
 				throw std::runtime_error("DISCONNECTED!");
 				break;
 
@@ -146,8 +138,10 @@ arbitrarylabel:
 				std::cout << "THRESHOLD: " << std::dec << threshold << std::endl;
 
 				if(threshold != -1){
-					g_Config.networkCompression = true;
+					csock->threshold = threshold;
+					csock->compression = true;
 				}
+
 				needRecheck = true;
 				break;
 			}
