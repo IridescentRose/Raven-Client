@@ -6,6 +6,7 @@ struct ClientConfig {
 	uint16_t	port;
 	std::string ip;
 	std::string username;
+	bool networkCompression;
 };
 
 extern ClientConfig g_Config;

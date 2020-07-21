@@ -150,6 +150,7 @@
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\Client\Client.cpp" />
+    <ClCompile Include="src\Client\Protocol.cpp" />
     <ClCompile Include="src\Common\Translation.cpp" />
     <ClCompile Include="src\Config.cpp" />
     <ClCompile Include="src\Main.cpp" />
@@ -160,6 +161,7 @@
   <ItemGroup>
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\Client\Client.h" />
+    <ClInclude Include="src\Client\Protocol.h" />
     <ClInclude Include="src\Common\Translation.h" />
     <ClInclude Include="src\Config.h" />
     <ClInclude Include="src\States\ClientState.h" />
