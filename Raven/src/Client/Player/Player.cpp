@@ -1,6 +1,6 @@
 #include "Player.h"
 #include "../Protocol.h"
-
+#include <Platform/Platform.h>
 #include <Utilities/Input.h>
 namespace Minecraft::Internal {
 	Player::Player()
@@ -11,10 +11,17 @@ namespace Minecraft::Internal {
 		timer.reset();
 		positionChanged = false;
 		rotationChanged = false;
+
+#if CURRENT_PLATFORM != PLATFORM_PSP
+		glfwSetInputMode(Platform::PC::g_Window->getWindow(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+#endif
 	}
 
 	Player::~Player()
 	{
+#if CURRENT_PLATFORM != PLATFORM_PSP
+		glfwSetInputMode(Platform::PC::g_Window->getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+#endif
 	}
 
 	void Player::update()
@@ -74,9 +81,6 @@ namespace Minecraft::Internal {
 		//XZ 
 		glm::vec2 velocity = { 0, 0 };
 
-		yaw = 0;
-		rotationChanged = true;
-
 		switch(run_state){
 		case -1:
 		default:
@@ -125,6 +129,40 @@ namespace Minecraft::Internal {
 
 		x += velocity.x * dt * 4.317;
 		z += velocity.y * dt * 4.317;
+
+
+
+
+		//Rotation
+		glm::vec2 pos = Utilities::getCursorPos();
+		
+		if(pos != glm::vec2(-1,-1)){
+#if CURRENT_PLATFORM != PLATFORM_PSP
+			glm::vec2 change = pos - glm::vec2(Platform::PC::g_Window->getWidth() / 2, Platform::PC::g_Window->getHeight() / 2);
+			yaw += change.x * 0.05f;
+			pitch += change.y * 0.05f;
+
+			if(change != glm::vec2(0, 0)){
+				rotationChanged = true;
+			}
+
+			glfwSetCursorPos(Platform::PC::g_Window->getWindow(), Platform::PC::g_Window->getWidth() / 2, Platform::PC::g_Window->getHeight() / 2);
+#endif
+		}else{
+			//Check console inputs
+		}
+
+
+		if (pitch > 89.99f)
+			pitch = 89.99f;
+		else if (pitch < -89.99f)
+			pitch = -89.99f;
+
+		if (yaw > 360)
+			yaw -= 360;
+		else if (yaw < 0)
+			yaw += 360;
+
 
 		//Send packet bois
 		if(!positionChanged && !rotationChanged){
