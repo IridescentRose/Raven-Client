@@ -9,6 +9,17 @@
 #include "../Common/Translation.h"
 #include <Audio/AudioClip.h>
 
+
+#if CURRENT_PLATFORM == PLATFORM_PSP
+#define TEXT_SIZE 0.5f
+#define CORRECTION_FACTOR 0
+#define SYSTEM_AUDIO_EXT ".bgm"
+#else
+#define TEXT_SIZE 0.75f
+#define CORRECTION_FACTOR 3
+#define SYSTEM_AUDIO_EXT ".ogg"
+#endif
+
 using namespace Stardust;
 using namespace Stardust::Core;
 

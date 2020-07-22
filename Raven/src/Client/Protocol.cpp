@@ -180,7 +180,12 @@ namespace Minecraft::Protocol {
 	int combat_event_handler(PacketIn* p) { std::cout << "WARNING COMBAT_EVENT TRIGGERED" << std::endl; return 0; }
 	int player_info_handler(PacketIn* p) { std::cout << "WARNING PLAYER_INFO TRIGGERED" << std::endl; return 0; }
 	int face_player_handler(PacketIn* p) { std::cout << "WARNING FACE_PLAYER TRIGGERED" << std::endl; return 0; }
-	int player_position_and_look_handler(PacketIn* p) { std::cout << "WARNING PLAYER_POSITION_AND_LOOK TRIGGERED" << std::endl; return 0; }
+	
+	int player_position_and_look_handler(PacketIn* p) { 
+		std::cout << "WARNING PLAYER_POSITION_AND_LOOK TRIGGERED" << std::endl; 
+		return 0; 
+	}
+	
 	int use_bed_handler(PacketIn* p) { std::cout << "WARNING USE_BED TRIGGERED" << std::endl; return 0; }
 	int unlock_recipes_handler(PacketIn* p) { std::cout << "WARNING UNLOCK_RECIPES TRIGGERED" << std::endl; return 0; }
 	int destroy_entities_handler(PacketIn* p) { std::cout << "WARNING DESTROY_ENTITIES TRIGGERED" << std::endl; return 0; }

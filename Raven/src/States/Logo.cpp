@@ -50,6 +50,7 @@ void Logo::update(Core::GameStateManager* st)
 
 void Logo::draw(Core::GameStateManager* st)
 {
+	GFX::g_RenderCore->clear();
 	if(timer.elapsed() <= 1.0f){
 		logoSprite->setColor(1.0f, 1.0f, 1.0f, (float)(timer.elapsed()));
 	}else if (timer.elapsed() > 1 && timer.elapsed() < 4){

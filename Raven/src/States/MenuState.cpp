@@ -3,15 +3,6 @@
 #include <Utilities/Input.h>
 #include "../Config.h"
 #include "ClientState.h"
-#if CURRENT_PLATFORM == PLATFORM_PSP
-#define TEXT_SIZE 0.5f
-#define CORRECTION_FACTOR 0
-#define SYSTEM_AUDIO_EXT ".bgm"
-#else
-#define TEXT_SIZE 0.75f
-#define CORRECTION_FACTOR 3
-#define SYSTEM_AUDIO_EXT ".ogg"
-#endif
 
 MenuState::MenuState()
 {
@@ -279,6 +270,7 @@ void MenuState::update(GameStateManager* st)
 
 void MenuState::draw(GameStateManager* st)
 {
+	GFX::g_RenderCore->clear();
 	GFX::g_RenderCore->set3DMode();
 	panorama->draw();
 

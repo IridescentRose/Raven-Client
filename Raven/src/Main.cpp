@@ -15,7 +15,6 @@ int main(){
 		app->update();
 
 		GFX::g_RenderCore->beginFrame();
-		GFX::g_RenderCore->clear();
 
 		app->draw();
 
