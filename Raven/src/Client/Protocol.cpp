@@ -1,5 +1,7 @@
 #include "Protocol.h"
 
+#include "World/World.h"
+
 namespace Minecraft::Protocol {
 	int spawn_object_handler(PacketIn* p) { std::cout << "WARNING SPAWN_OBJECT TRIGGERED" << std::endl; return 0; }
 	int spawn_experience_orb_handler(PacketIn* p) { std::cout << "WARNING SPAWN_EXPERIENCE_ORB TRIGGERED" << std::endl; return 0; }
@@ -108,10 +110,52 @@ namespace Minecraft::Protocol {
 	}
 	
 	int map_data_handler(PacketIn* p) { std::cout << "WARNING MAP_DATA TRIGGERED" << std::endl; return 0; }
-	int entity_handler(PacketIn* p) { std::cout << "WARNING ENTITY TRIGGERED" << std::endl; return 0; }
-	int entity_relative_move_handler(PacketIn* p) { std::cout << "WARNING ENTITY_RELATIVE_MOVE TRIGGERED" << std::endl; return 0; }
-	int entity_look_and_relative_move_handler(PacketIn* p) { std::cout << "WARNING ENTITY_LOOK_AND_RELATIVE_MOVE TRIGGERED" << std::endl; return 0; }
-	int entity_look_handler(PacketIn* p) { std::cout << "WARNING ENTITY_LOOK TRIGGERED" << std::endl; return 0; }
+	
+	int entity_handler(PacketIn* p) { 
+		//std::cout << "WARNING ENTITY TRIGGERED" << std::endl; 
+		return 0; 
+	}
+	
+	int entity_relative_move_handler(PacketIn* p) { 
+		//std::cout << "WARNING ENTITY_RELATIVE_MOVE TRIGGERED" << std::endl; 
+		return 0; 
+	}
+	
+	int entity_look_and_relative_move_handler(PacketIn* p) { 
+		//std::cout << "WARNING ENTITY_LOOK_AND_RELATIVE_MOVE TRIGGERED" << std::endl; 
+		return 0; 
+	}
+
+	int entity_look_handler(PacketIn* p) { 
+		//std::cout << "WARNING ENTITY_LOOK TRIGGERED" << std::endl; 
+		return 0; 
+	}
+	
+	int entity_head_look_handler(PacketIn* p) {
+		//std::cout << "WARNING ENTITY_HEAD_LOOK TRIGGERED" << std::endl; 
+		return 0;
+	}
+
+	int entity_metadata_handler(PacketIn* p) { 
+		//std::cout << "WARNING ENTITY_METADATA TRIGGERED" << std::endl; 
+		return 0; 
+	}
+	
+	int entity_teleport_handler(PacketIn* p) { 
+		//std::cout << "WARNING ENTITY_TELEPORT TRIGGERED" << std::endl; 
+		return 0; 
+	}
+	
+	int entity_properties_handler(PacketIn* p) { 
+		//std::cout << "WARNING ENTITY_PROPERTIES TRIGGERED" << std::endl; 
+		return 0; 
+	}
+	
+	int entity_effect_handler(PacketIn* p) { 
+		//std::cout << "WARNING ENTITY_EFFECT TRIGGERED" << std::endl; 
+		return 0; 
+	}
+
 	int vehicle_move_handler(PacketIn* p) { std::cout << "WARNING VEHICLE_MOVE TRIGGERED" << std::endl; return 0; }
 	int open_sign_editor_handler(PacketIn* p) { std::cout << "WARNING OPEN_SIGN_EDITOR TRIGGERED" << std::endl; return 0; }
 	int craft_recipe_response_handler(PacketIn* p) { std::cout << "WARNING CRAFT_RECIPE_RESPONSE TRIGGERED" << std::endl; return 0; }
@@ -143,7 +187,8 @@ namespace Minecraft::Protocol {
 	int remove_entity_effect_handler(PacketIn* p) { std::cout << "WARNING REMOVE_ENTITY_EFFECT TRIGGERED" << std::endl; return 0; }
 	int resource_pack_send_handler(PacketIn* p) { std::cout << "WARNING RESOURCE_PACK_SEND TRIGGERED" << std::endl; return 0; }
 	int respawn_handler(PacketIn* p) { std::cout << "WARNING RESPAWN TRIGGERED" << std::endl; return 0; }
-	int entity_head_look_handler(PacketIn* p) { std::cout << "WARNING ENTITY_HEAD_LOOK TRIGGERED" << std::endl; return 0; }
+	
+	
 	int select_advancement_tab_handler(PacketIn* p) { std::cout << "WARNING SELECT_ADVANCEMENT_TAB TRIGGERED" << std::endl; return 0; }
 	int world_border_handler(PacketIn* p) { std::cout << "WARNING WORLD_BORDER TRIGGERED" << std::endl; return 0; }
 	int camera_handler(PacketIn* p) { std::cout << "WARNING CAMERA TRIGGERED" << std::endl; return 0; }
@@ -160,7 +205,6 @@ namespace Minecraft::Protocol {
 	}
 	
 	int display_scoreboard_handler(PacketIn* p) { std::cout << "WARNING DISPLAY_SCOREBOARD TRIGGERED" << std::endl; return 0; }
-	int entity_metadata_handler(PacketIn* p) { std::cout << "WARNING ENTITY_METADATA TRIGGERED" << std::endl; return 0; }
 	int attach_entity_handler(PacketIn* p) { std::cout << "WARNING ATTACH_ENTITY TRIGGERED" << std::endl; return 0; }
 	int entity_velocity_handler(PacketIn* p) { std::cout << "WARNING ENTITY_VELOCITY TRIGGERED" << std::endl; return 0; }
 	int entity_equipment_handler(PacketIn* p) { std::cout << "WARNING ENTITY_EQUIPMENT TRIGGERED" << std::endl; return 0; }
@@ -171,16 +215,27 @@ namespace Minecraft::Protocol {
 	int teams_handler(PacketIn* p) { std::cout << "WARNING TEAMS TRIGGERED" << std::endl; return 0; }
 	int update_score_handler(PacketIn* p) { std::cout << "WARNING UPDATE_SCORE TRIGGERED" << std::endl; return 0; }
 	int spawn_position_handler(PacketIn* p) { std::cout << "WARNING SPAWN_POSITION TRIGGERED" << std::endl; return 0; }
-	int time_update_handler(PacketIn* p) { std::cout << "WARNING TIME_UPDATE TRIGGERED" << std::endl; return 0; }
+	
+	int time_update_handler(PacketIn* p) { 
+		//std::cout << "WARNING TIME_UPDATE TRIGGERED" << std::endl;
+		uint64_t age, timeOfDay;
+		p->buffer->ReadBEUInt64(age);
+		p->buffer->ReadBEUInt64(timeOfDay);
+
+		Internal::g_World->timeData.age = age;
+		Internal::g_World->timeData.timeOfDay = timeOfDay;
+		return 0; 
+	}
+	
 	int title_handler(PacketIn* p) { std::cout << "WARNING TITLE TRIGGERED" << std::endl; return 0; }
 	int stop_sound_handler(PacketIn* p) { std::cout << "WARNING STOP_SOUND TRIGGERED" << std::endl; return 0; }
 	int sound_effect_handler(PacketIn* p) { std::cout << "WARNING SOUND_EFFECT TRIGGERED" << std::endl; return 0; }
 	int player_list_header_and_footer_handler(PacketIn* p) { std::cout << "WARNING PLAYER_LIST_HEADER_AND_FOOTER TRIGGERED" << std::endl; return 0; }
 	int collect_item_handler(PacketIn* p) { std::cout << "WARNING COLLECT_ITEM TRIGGERED" << std::endl; return 0; }
-	int entity_teleport_handler(PacketIn* p) { std::cout << "WARNING ENTITY_TELEPORT TRIGGERED" << std::endl; return 0; }
+	
+	
+
 	int advancements_handler(PacketIn* p) { std::cout << "WARNING ADVANCEMENTS TRIGGERED" << std::endl; return 0; }
-	int entity_properties_handler(PacketIn* p) { std::cout << "WARNING ENTITY_PROPERTIES TRIGGERED" << std::endl; return 0; }
-	int entity_effect_handler(PacketIn* p) { std::cout << "WARNING ENTITY_EFFECT TRIGGERED" << std::endl; return 0; }
 	int declare_recipes_handler(PacketIn* p) { std::cout << "WARNING DECLARE_RECIPES TRIGGERED" << std::endl; return 0; }
 	int tags_handler(PacketIn* p) { std::cout << "WARNING TAGS TRIGGERED" << std::endl; return 0; }
 

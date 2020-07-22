@@ -2,10 +2,13 @@
 #include "../Config.h"
 #include <iostream>
 #include "Protocol.h"
+#include "World/World.h"
+
 namespace Minecraft {
 	using namespace Protocol;
 	Client::Client()
 	{
+		Internal::g_World = new Internal::World();
 	}
 
 	Client::~Client()
@@ -167,6 +170,9 @@ namespace Minecraft {
 
 		csock->Connect(g_Config.port, g_Config.ip.c_str());
 		csock->SetBlock(false);
+
+		Internal::g_World->init();
+
 		login();
 		
 		//Set up client connection state.

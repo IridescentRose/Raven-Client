@@ -2,6 +2,7 @@
 #include <Network/NetworkDriver.h>
 using namespace Stardust;
 
+
 namespace Minecraft{
 	class Client{
 	public:
