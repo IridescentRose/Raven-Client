@@ -144,12 +144,14 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ws2_32.lib;winmm.lib;sfml-audio-s.lib;sfml-system-s.lib;openal32.lib;flac.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;ogg.lib;Stardust-Platform.lib;Stardust-Utilities.lib;Stardust-Core.lib;glfw3.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libz-static.lib;ws2_32.lib;winmm.lib;sfml-audio-s.lib;sfml-system-s.lib;openal32.lib;flac.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;ogg.lib;Stardust-Platform.lib;Stardust-Utilities.lib;Stardust-Core.lib;glfw3.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\Client\Client.cpp" />
+    <ClCompile Include="src\Client\Protocol.cpp" />
+    <ClCompile Include="src\Client\World\World.cpp" />
     <ClCompile Include="src\Common\Translation.cpp" />
     <ClCompile Include="src\Config.cpp" />
     <ClCompile Include="src\Main.cpp" />
@@ -160,6 +162,8 @@
   <ItemGroup>
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\Client\Client.h" />
+    <ClInclude Include="src\Client\Protocol.h" />
+    <ClInclude Include="src\Client\World\World.h" />
     <ClInclude Include="src\Common\Translation.h" />
     <ClInclude Include="src\Config.h" />
     <ClInclude Include="src\States\ClientState.h" />
