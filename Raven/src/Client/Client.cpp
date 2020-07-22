@@ -166,8 +166,9 @@ namespace Minecraft {
 		testPing();
 
 		csock->Connect(g_Config.port, g_Config.ip.c_str());
+		csock->SetBlock(false);
 		login();
-
+		
 		//Set up client connection state.
 		
 		Network::g_NetworkDriver.AddPacketHandler(SPAWN_OBJECT, spawn_object_handler);

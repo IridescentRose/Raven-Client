@@ -1,5 +1,5 @@
 #pragma once
-#include <Network/NetworkTypes.h>
+#include <Network//NetworkDriver.h>
 #include <iostream>
 using namespace Stardust::Network;
 
@@ -184,5 +184,8 @@ namespace Minecraft::Protocol{
 
 	namespace PacketsOut{
 		//Bunch of utility packet writing functions
+		void send_plugin_message(std::string identifier, std::string data);
+		void send_client_settings(std::string locale, uint8_t distance, uint8_t c_mode, bool colors, uint8_t bitmask, uint8_t hand);
+		void send_keep_alive(uint64_t longData);
 	}
 }
