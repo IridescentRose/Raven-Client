@@ -1,5 +1,6 @@
 #include "Protocol.h"
-
+#include <json/json.h>
+#include "../Common/Translation.h"
 #include "World/World.h"
 
 namespace Minecraft::Protocol {
@@ -57,7 +58,39 @@ namespace Minecraft::Protocol {
 	}
 	
 	int named_sound_effect_handler(PacketIn* p) { std::cout << "WARNING NAMED_SOUND_EFFECT TRIGGERED" << std::endl; return 0; }
-	int disconnect_handler(PacketIn* p) { std::cout << "WARNING DISCONNECT TRIGGERED" << std::endl; return 0; }
+	
+	int disconnect_handler(PacketIn* p) { 
+		
+		std::string jsonresponse = "";
+		p->buffer->ReadVarUTF8String(jsonresponse);
+
+		Json::Value root;
+
+		Json::CharReaderBuilder builder;
+		Json::CharReader* reader = builder.newCharReader();
+		std::string errors;
+
+		bool parsingSuccessful = reader->parse(jsonresponse.c_str(), jsonresponse.c_str() + jsonresponse.size(),
+			&root,
+			&errors);
+
+		if(!parsingSuccessful){
+			std::cout << "Failed to parse the JSON, errors:" << std::endl;
+			std::cout << errors << std::endl;
+		}
+
+		if(!root["translate"].isNull()){
+			std::stringstream str;
+			str << root["with"][0].asString() << std::endl;
+
+			std::cout << str.str() << std::endl;
+			throw std::runtime_error(str.str());
+		}
+
+
+		return 0; 
+	}
+	
 	int entity_status_handler(PacketIn* p) { std::cout << "WARNING ENTITY_STATUS TRIGGERED" << std::endl; return 0; }
 	int nbt_query_response_handler(PacketIn* p) { std::cout << "WARNING NBT_QUERY_RESPONSE TRIGGERED" << std::endl; return 0; }
 	int explosion_handler(PacketIn* p) { std::cout << "WARNING EXPLOSION TRIGGERED" << std::endl; return 0; }
@@ -182,7 +215,60 @@ namespace Minecraft::Protocol {
 	int face_player_handler(PacketIn* p) { std::cout << "WARNING FACE_PLAYER TRIGGERED" << std::endl; return 0; }
 	
 	int player_position_and_look_handler(PacketIn* p) { 
-		std::cout << "WARNING PLAYER_POSITION_AND_LOOK TRIGGERED" << std::endl; 
+
+		Internal::g_World->is_loading = false;
+
+		double x, y, z;
+		float yaw, pitch;
+		uint8_t flags = 0;
+
+		uint32_t id;
+
+		p->buffer->ReadBEDouble(x);
+		p->buffer->ReadBEDouble(y);
+		p->buffer->ReadBEDouble(z);
+		p->buffer->ReadBEFloat(yaw);
+		p->buffer->ReadBEFloat(pitch);
+		p->buffer->ReadBEUInt8(flags);
+		p->buffer->ReadVarInt32(id);
+
+		if ((flags & 0x01) == 0x01) {
+			Internal::g_World->player->x += x;
+		}
+		else {
+			Internal::g_World->player->x = x;
+		}
+
+		if ((flags & 0x02) == 0x02) {
+			Internal::g_World->player->y += y;
+		}
+		else {
+			Internal::g_World->player->y = y;
+		}
+
+		if ((flags & 0x04) == 0x04) {
+			Internal::g_World->player->z += z;
+		}
+		else {
+			Internal::g_World->player->z = z;
+		}
+
+		if ((flags & 0x08) == 0x08) {
+			Internal::g_World->player->yaw += yaw;
+		}
+		else {
+			Internal::g_World->player->yaw = yaw;
+		}
+
+		if ((flags & 0x10) == 0x10) {
+			Internal::g_World->player->pitch += pitch;
+		}
+		else {
+			Internal::g_World->player->pitch = pitch;
+		}
+
+		PacketsOut::send_teleport_confirm(id);
+
 		return 0; 
 	}
 	
@@ -274,6 +360,61 @@ namespace Minecraft::Protocol {
 		PacketOut* p = new PacketOut(12);
 		p->ID = 0x0E;
 		p->buffer->WriteBEUInt64(longData);
+
+		g_NetworkDriver.AddPacket(p);
+		g_NetworkDriver.SendPackets(p);
+	}
+	void PacketsOut::send_teleport_confirm(uint32_t id)
+	{
+		PacketOut* p = new PacketOut(12);
+		p->ID = 0x00;
+		p->buffer->WriteVarInt32(id);
+
+		g_NetworkDriver.AddPacket(p);
+		g_NetworkDriver.SendPackets(p);
+	}
+	void PacketsOut::send_player()
+	{
+		PacketOut* p = new PacketOut(8);
+		p->ID = 0x0F;
+		p->buffer->WriteBool(Internal::g_World->player->onGround);
+
+		g_NetworkDriver.AddPacket(p);
+		g_NetworkDriver.SendPackets(p);
+	}
+	void PacketsOut::send_player_position()
+	{
+		PacketOut* p = new PacketOut(64);
+		p->ID = 0x10;
+		p->buffer->WriteBEDouble(Internal::g_World->player->x);
+		p->buffer->WriteBEDouble(Internal::g_World->player->y);
+		p->buffer->WriteBEDouble(Internal::g_World->player->z);
+		p->buffer->WriteBool(Internal::g_World->player->onGround);
+
+		g_NetworkDriver.AddPacket(p);
+		g_NetworkDriver.SendPackets(p);
+	}
+	void PacketsOut::send_player_position_look()
+	{
+		PacketOut* p = new PacketOut(64);
+		p->ID = 0x11;
+		p->buffer->WriteBEDouble(Internal::g_World->player->x);
+		p->buffer->WriteBEDouble(Internal::g_World->player->y);
+		p->buffer->WriteBEDouble(Internal::g_World->player->z);
+		p->buffer->WriteBEFloat(Internal::g_World->player->yaw);
+		p->buffer->WriteBEFloat(Internal::g_World->player->pitch);
+		p->buffer->WriteBool(Internal::g_World->player->onGround);
+
+		g_NetworkDriver.AddPacket(p);
+		g_NetworkDriver.SendPackets(p);
+	}
+	void PacketsOut::send_player_look()
+	{
+		PacketOut* p = new PacketOut(64);
+		p->ID = 0x12;
+		p->buffer->WriteBEFloat(Internal::g_World->player->yaw);
+		p->buffer->WriteBEFloat(Internal::g_World->player->pitch);
+		p->buffer->WriteBool(Internal::g_World->player->onGround);
 
 		g_NetworkDriver.AddPacket(p);
 		g_NetworkDriver.SendPackets(p);

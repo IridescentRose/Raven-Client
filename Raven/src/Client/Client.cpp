@@ -286,14 +286,18 @@ namespace Minecraft {
 		}
 		g_NetworkDriver.HandlePackets();
 
+		Internal::g_World->update();
 	}
 
 	void Client::draw()
 	{
-
-		GFX::g_RenderCore->clear();
-		drawWaitStage("multiplayer.downloadingTerrain");
-
+		if (Internal::g_World->is_loading) {
+			GFX::g_RenderCore->clear();
+			drawWaitStage("multiplayer.downloadingTerrain");
+		}
+		else {
+			Internal::g_World->draw();
+		}
 	}
 	void Client::drawWaitStage(std::string keyCodes)
 	{

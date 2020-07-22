@@ -187,5 +187,11 @@ namespace Minecraft::Protocol{
 		void send_plugin_message(std::string identifier, std::string data);
 		void send_client_settings(std::string locale, uint8_t distance, uint8_t c_mode, bool colors, uint8_t bitmask, uint8_t hand);
 		void send_keep_alive(uint64_t longData);
+		void send_teleport_confirm(uint32_t id);
+
+		void send_player();
+		void send_player_position();
+		void send_player_position_look();
+		void send_player_look();
 	}
 }

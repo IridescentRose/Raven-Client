@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include "../Player/Player.h"
 
 namespace Minecraft::Internal{
 
@@ -22,7 +23,8 @@ namespace Minecraft::Internal{
 		void draw();
 
 		TimeDataStruct timeData;
-
+		bool is_loading;
+		Player* player;
 	private:
 	};
 
