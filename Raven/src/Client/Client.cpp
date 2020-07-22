@@ -296,7 +296,13 @@ namespace Minecraft {
 			drawWaitStage("multiplayer.downloadingTerrain");
 		}
 		else {
+			GFX::g_RenderCore->clear();
 			Internal::g_World->draw();
+
+			//Overlay data
+			textRenderer->setStyle({ 255, 255, 255, 255, TEXT_SIZE, TEXT_RENDERER_BOTTOM, TEXT_RENDERER_LEFT, 0.0f, true });
+			textRenderer->draw("Pos " + std::to_string(Internal::g_World->player->x) + " " + std::to_string(Internal::g_World->player->y) + " " + std::to_string(Internal::g_World->player->z), { 0, 12 });
+			textRenderer->draw("Look Y: " + std::to_string(Internal::g_World->player->yaw) + " X: " + std::to_string(Internal::g_World->player->pitch), { 0, 24 });
 		}
 	}
 	void Client::drawWaitStage(std::string keyCodes)
