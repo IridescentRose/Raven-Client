@@ -1,4 +1,5 @@
 #include "World.h"
+#include <stddef.h>
 
 namespace Minecraft::Internal {
 	World::World()

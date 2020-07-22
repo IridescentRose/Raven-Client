@@ -47,7 +47,7 @@ namespace Minecraft {
 			Platform::delayForMS(50);
 			timeout++;
 
-			if(timeout == 100){
+			if(timeout == 6000){
 				throw std::runtime_error("COULDN'T CONNECT!");
 			}
 		}
@@ -73,7 +73,7 @@ namespace Minecraft {
 			Platform::delayForMS(50);
 			timeout++;
 
-			if (timeout == 100) {
+			if (timeout == 6000) {
 				throw std::runtime_error("COULDN'T GET PING!");
 			}
 		}
@@ -112,20 +112,12 @@ namespace Minecraft {
 				Platform::delayForMS(50);
 				timeout++;
 
-				if (timeout == 100) {
+				if (timeout == 6000) {
 					throw std::runtime_error("COULDN'T GET COMPRESSION / LOGIN!");
 				}
 			}
 
 			switch (pIn->ID) {
-			case 0x00:				
-				throw std::runtime_error("DISCONNECTED!");
-				break;
-
-			case 0x01:
-				throw std::runtime_error("NO ENCRYPTION SUPPORT!");
-				break;
-
 			case 0x02:
 				//Login success, no compress
 				pIn->buffer->ReadVarUTF8String(UUID);
