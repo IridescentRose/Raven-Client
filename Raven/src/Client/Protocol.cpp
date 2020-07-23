@@ -309,12 +309,8 @@ namespace Minecraft::Protocol {
 	
 	int time_update_handler(PacketIn* p) { 
 		//std::cout << "WARNING TIME_UPDATE TRIGGERED" << std::endl;
-		uint64_t age, timeOfDay;
-		p->buffer->ReadBEUInt64(age);
-		p->buffer->ReadBEUInt64(timeOfDay);
-
-		Internal::g_World->timeData.age = age;
-		Internal::g_World->timeData.timeOfDay = timeOfDay;
+		p->buffer->ReadBEUInt64(Internal::g_World->timeData.age);
+		p->buffer->ReadBEUInt64(Internal::g_World->timeData.timeOfDay);
 		return 0; 
 	}
 	

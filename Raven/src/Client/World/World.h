@@ -1,6 +1,8 @@
 #pragma once
 #include <cstdint>
 #include "../Player/Player.h"
+#include "../Rendering/Sky.h"
+#include <Utilities/Timer.h>
 
 namespace Minecraft::Internal{
 
@@ -25,6 +27,8 @@ namespace Minecraft::Internal{
 		TimeDataStruct timeData;
 		bool is_loading;
 		Player* player;
+		Rendering::Sky* sky;
+		Utilities::Timer timer;
 	private:
 	};
 

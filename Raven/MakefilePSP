@@ -8,7 +8,9 @@ src/Client/Client.o \
 src/Config.o \
 src/Common/Translation.o \
 src/Client/Protocol.o \
-src/Client/World/World.o
+src/Client/World/World.o \
+src/Client/Rendering/Sky.o \
+src/Client/Player/Player.o
 
 INCDIR = $(PSPPATH)/include
 INCDIR += ../Stardust-Engine/Platform/include ../Stardust-Engine/Deps/include ../Stardust-Engine/Utilities/include ../Stardust-Engine/Core/include

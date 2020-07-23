@@ -1,4 +1,5 @@
 #include "ClientState.h"
+#include <iostream>
 
 ClientState::ClientState()
 {

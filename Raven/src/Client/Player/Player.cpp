@@ -2,6 +2,7 @@
 #include "../Protocol.h"
 #include <Platform/Platform.h>
 #include <Utilities/Input.h>
+#include <GFX/RenderCore.h>
 namespace Minecraft::Internal {
 	Player::Player()
 	{
@@ -11,6 +12,8 @@ namespace Minecraft::Internal {
 		timer.reset();
 		positionChanged = false;
 		rotationChanged = false;
+		cam = new GFX::Render3D::Camera({ 0, 0, 0 }, { 0, 0, 0 }, 90.0f, 16.0f / 9.0f, 0.3f, 1000.0f);
+		GFX::g_RenderCore->bindCamera(cam);
 
 #if CURRENT_PLATFORM != PLATFORM_PSP
 		glfwSetInputMode(Platform::PC::g_Window->getWindow(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
@@ -150,6 +153,26 @@ namespace Minecraft::Internal {
 #endif
 		}else{
 			//Check console inputs
+			float vel = 90.0f;
+			if (Utilities::KeyPressed(PSP_CTRL_TRIANGLE) || Utilities::KeyHold(PSP_CTRL_TRIANGLE)) {
+				pitch -= vel * dt;
+				rotationChanged = true;
+			}
+
+			if (Utilities::KeyPressed(PSP_CTRL_CROSS) || Utilities::KeyHold(PSP_CTRL_CROSS)) {
+				pitch += vel * dt;
+				rotationChanged = true;
+			}
+
+			if (Utilities::KeyPressed(PSP_CTRL_SQUARE) || Utilities::KeyHold(PSP_CTRL_SQUARE)) {
+				yaw -= vel * dt;
+				rotationChanged = true;
+			}
+
+			if (Utilities::KeyPressed(PSP_CTRL_CIRCLE) || Utilities::KeyHold(PSP_CTRL_CIRCLE)) {
+				yaw += vel * dt;
+				rotationChanged = true;
+			}
 		}
 
 
@@ -176,6 +199,10 @@ namespace Minecraft::Internal {
 		}else{
 			Protocol::PacketsOut::send_player_position_look();
 		}
+
+		cam->pos = { x, y, z };
+		cam->rot = { pitch, yaw, 0.0f };
+		cam->update();
 
 		positionChanged = false;
 		rotationChanged = false;

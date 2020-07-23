@@ -146,9 +146,9 @@ namespace Minecraft {
 			}
 
 		} while (needRecheck);
-
 	}
 
+	bool postInit = false;
 	void Client::init()
 	{
 		options_bg = GFX::g_TextureManager->loadTex("./assets/minecraft/textures/gui/options_background.png", GFX_FILTER_NEAREST, GFX_FILTER_NEAREST, true);
@@ -179,10 +179,8 @@ namespace Minecraft {
 
 		drawWaitStage("connect.authorizing");
 		login();
-		drawWaitStage("multiplayer.downloadingTerrain");
 		
 		//Set up client connection state.
-		{
 			Network::g_NetworkDriver.AddPacketHandler(SPAWN_OBJECT, spawn_object_handler);
 			Network::g_NetworkDriver.AddPacketHandler(SPAWN_EXPERIENCE_ORB, spawn_experience_orb_handler);
 			Network::g_NetworkDriver.AddPacketHandler(SPAWN_GLOBAL_ENTITY, spawn_global_entity_handler);
@@ -269,7 +267,8 @@ namespace Minecraft {
 			Network::g_NetworkDriver.AddPacketHandler(ENTITY_EFFECT, entity_effect_handler);
 			Network::g_NetworkDriver.AddPacketHandler(DECLARE_RECIPES, declare_recipes_handler);
 			Network::g_NetworkDriver.AddPacketHandler(TAGS, tags_handler);
-		}
+
+			postInit = true;
 	}
 
 	void Client::cleanup()
@@ -308,7 +307,8 @@ namespace Minecraft {
 	void Client::drawWaitStage(std::string keyCodes)
 	{
 #if CURRENT_PLATFORM == PLATFORM_PSP
-		GFX::g_RenderCore->beginFrame();
+		if(!postInit)
+			GFX::g_RenderCore->beginFrame();
 #endif
 		GFX::g_RenderCore->setClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		GFX::g_RenderCore->clear();
@@ -326,7 +326,8 @@ namespace Minecraft {
 		
 
 #if CURRENT_PLATFORM == PLATFORM_PSP
-		GFX::g_RenderCore->endFrame();
+		if (!postInit)
+			GFX::g_RenderCore->endFrame();
 #endif
 	}
 }
