@@ -2,6 +2,7 @@
 #include <json/json.h>
 #include "../Common/Translation.h"
 #include "World/World.h"
+#include <map>
 
 namespace Minecraft::Protocol {
 	int spawn_object_handler(PacketIn* p) { std::cout << "WARNING SPAWN_OBJECT TRIGGERED" << std::endl; return 0; }
@@ -106,9 +107,141 @@ namespace Minecraft::Protocol {
 
 		return 0; 
 	}
+
+	void readChunkColumn(Internal::Chunks::ChunkColumn* chunk, bool full, uint32_t mask, ByteBuffer* buf) {
+		
+		for (int y = 0; y < 16; y++) {
+			if ((mask & (1 << y)) != 0) {
+				uint8_t bitsPerBlock;
+				buf->ReadBEUInt8(bitsPerBlock);
+
+				uint32_t paletteLen;
+				buf->ReadVarInt32(paletteLen);
+
+				std::map<int, uint16_t> palette;
+
+				if (paletteLen == 0) {
+					//Direct palette
+				}
+				else {
+					//Map
+					for (int i = 0; i < paletteLen; i++) {
+						uint32_t id;
+						buf->ReadVarInt32(id);
+						palette.emplace(i, id);
+					}
+				}
+
+				uint32_t individualValueMask = (uint32_t)((1 << bitsPerBlock) - 1);
+
+				uint32_t dataArrayLen;
+				buf->ReadVarInt32(dataArrayLen);
+
+				uint64_t* dataArray = (uint64_t*)malloc(dataArrayLen);
+				
+				for (int i = 0; i < dataArrayLen / 8; i++) {
+					uint64_t longboi;
+					buf->ReadBEUInt64(longboi);
+
+					dataArray[i] = longboi;
+				}
+
+				Internal::ChunkSection* sect = new Internal::ChunkSection(y);
+
+				for (int blockY = 0; blockY < 16; blockY++) {
+					for (int blockZ = 0; blockZ < 16; blockZ++) {
+						for (int blockX = 0; blockX < 16; blockX++) {
+							int blockNumber = (((blockY * 16) + blockZ) * 16) + blockX;
+							int startLong = (blockNumber * bitsPerBlock) / 64;
+							int startOffset = (blockNumber * bitsPerBlock) % 64;
+							int endLong = ((blockNumber + 1) * bitsPerBlock - 1) / 64;
+
+							uint16_t data;
+							if (startLong == endLong) {
+								data = (uint16_t)(dataArray[startLong] >> startOffset);
+							}
+							else {
+								int endOffset = 64 - startOffset;
+								data = (uint16_t)(dataArray[startLong] >> startOffset | dataArray[endLong] << endOffset);
+							}
+							data &= individualValueMask;
+
+							uint16_t id;
+							if (paletteLen == 0) {
+								id = data;
+							}
+							else {
+								id = palette[data];
+							}
+
+							//Add into the array
+							sect->blocks[(((blockY * 16) + blockZ) * 16) + blockX] = id;
+						}
+					}
+				}
+
+
+				for (int i = 0; i < 2048; i++) {
+					uint8_t b;
+					buf->ReadBEUInt8(b);
+					sect->blk_light[i] = b;
+				}
+
+				for (int i = 0; i < 2048; i++) {
+					uint8_t b;
+					buf->ReadBEUInt8(b);
+					sect->sky_light[i] = b;
+				}
+
+				chunk->addSection(sect);
+			}
+		}
+
+		for (int z = 0; z < 16; z++) {
+			for (int x = 0; x < 16; x++) {
+				uint8_t biomeData;
+				buf->ReadBEUInt8(biomeData);
+				chunk->biomes[x][z] = biomeData;
+			}
+		}
+	}
 	
 	int chunk_data_handler(PacketIn* p) { 
-		std::cout << "WARNING CHUNK_DATA TRIGGERED" << std::endl; 
+		int32_t x, z;
+		p->buffer->ReadBEInt32(x);
+		p->buffer->ReadBEInt32(z);
+
+		bool newChunk = false;
+		p->buffer->ReadBool(newChunk);
+		
+		uint32_t mask = 0;
+		p->buffer->ReadVarInt32(mask);
+
+		uint32_t size = 0;
+		p->buffer->ReadVarInt32(size);
+
+		Internal::Chunks::ChunkColumn* chk;
+
+		if (newChunk) {
+			chk = new Internal::Chunks::ChunkColumn(x, z);
+		}
+		else {
+			chk = Internal::g_World->chunkMap[mc::Vector3i(x, z, 0)];
+		}
+
+		//Read
+		readChunkColumn(chk, newChunk, mask, p->buffer);
+
+
+
+		uint32_t blockEntities = 0;
+		p->buffer->ReadVarInt32(blockEntities);
+
+		
+		for (int i = 0; i < (int)blockEntities; i++) {
+			std::cout << "UNSUPPORTED BLOCK ENTITIES!" << std::endl;
+		}
+
 		return 0; 
 	}
 	

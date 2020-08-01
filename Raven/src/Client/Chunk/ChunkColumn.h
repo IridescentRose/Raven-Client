@@ -22,10 +22,10 @@ namespace Minecraft::Internal::Chunks {
 		inline uint8_t getBiomeAt(uint8_t x, uint8_t z) {
 			return biomes[x][z];
 		}
+		uint8_t biomes[CHUNK_SECTION_LENGTH][CHUNK_SECTION_WIDTH];
 
 	private:
 		std::vector<ChunkSection*> sections;
-		uint8_t biomes[CHUNK_SECTION_LENGTH][CHUNK_SECTION_WIDTH];
 		int cX, cZ;
 	};
 }

@@ -32,8 +32,8 @@ namespace Minecraft::Internal{
 		Player* player;
 		Rendering::Sky* sky;
 		Utilities::Timer timer;
-	private:
 		std::map<mc::Vector3i, ChunkColumn*> chunkMap;
+	private:
 
 	};
 
