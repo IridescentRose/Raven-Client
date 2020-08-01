@@ -107,7 +107,11 @@ namespace Minecraft::Protocol {
 		return 0; 
 	}
 	
-	int chunk_data_handler(PacketIn* p) { std::cout << "WARNING CHUNK_DATA TRIGGERED" << std::endl; return 0; }
+	int chunk_data_handler(PacketIn* p) { 
+		std::cout << "WARNING CHUNK_DATA TRIGGERED" << std::endl; 
+		return 0; 
+	}
+	
 	int effect_handler(PacketIn* p) { std::cout << "WARNING EFFECT TRIGGERED" << std::endl; return 0; }
 	int particle_handler(PacketIn* p) { std::cout << "WARNING PARTICLE TRIGGERED" << std::endl; return 0; }
 	

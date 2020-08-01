@@ -83,7 +83,7 @@
     <OutDir>$(SolutionDir)../bin/</OutDir>
     <IntDir>$(SolutionDir)../obj/</IntDir>
     <LibraryPath>$(SolutionDir)..\Stardust-Engine\Deps\lib\win;$(SolutionDir)..\Stardust-Engine\Stardust\lib\win;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)..\Stardust-Engine\Deps\include;$(SolutionDir)..\Stardust-Engine\Core\include;$(SolutionDir)..\Stardust-Engine\Platform\include;$(SolutionDir)..\Stardust-Engine\Utilities\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>$(SolutionDir)..\include;$(SolutionDir)..\Stardust-Engine\Deps\include;$(SolutionDir)..\Stardust-Engine\Core\include;$(SolutionDir)..\Stardust-Engine\Platform\include;$(SolutionDir)..\Stardust-Engine\Utilities\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -149,6 +149,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\Client\Chunk\ChunkColumn.cpp" />
+    <ClCompile Include="src\Client\Chunk\ChunkSection.cpp" />
     <ClCompile Include="src\Client\Client.cpp" />
     <ClCompile Include="src\Client\Player\Player.cpp" />
     <ClCompile Include="src\Client\Protocol.cpp" />
@@ -163,6 +165,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application.h" />
+    <ClInclude Include="src\Client\Chunk\ChunkColumn.h" />
+    <ClInclude Include="src\Client\Chunk\ChunkDefines.h" />
+    <ClInclude Include="src\Client\Chunk\ChunkSection.h" />
     <ClInclude Include="src\Client\Client.h" />
     <ClInclude Include="src\Client\Player\Player.h" />
     <ClInclude Include="src\Client\Protocol.h" />

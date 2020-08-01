@@ -18,9 +18,17 @@ namespace Minecraft::Internal {
 		timer.reset();
 		timeData.age = 0;
 		timeData.timeOfDay = 0;
+		chunkMap.clear();
 	}
 	void World::cleanup()
 	{
+		if (chunkMap.size() > 0) {
+			for (auto& [v, c] : chunkMap) {
+				delete c;
+			}
+			chunkMap.clear();
+		}
+		chunkMap.clear();
 	}
 	void World::update()
 	{
@@ -37,9 +45,8 @@ namespace Minecraft::Internal {
 	void World::tickUpdate()
 	{
 		timeData.age++;
-		timeData.timeOfDay = timeData.age % 24000;
-		sky->Update(timeData.age);
-		std::cout << timeData.age << std::endl;
+		timeData.timeOfDay++;
+		sky->Update(timeData.timeOfDay);
 	}
 	void World::draw()
 	{
