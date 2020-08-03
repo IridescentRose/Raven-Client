@@ -38,17 +38,6 @@ namespace Minecraft::Internal::Chunks {
 		chnks->cX = cX;
 		chnks->cZ = cZ;
 
-		for (int y = 0; y < 16; y++) {
-			for (int x = 0; x < 16; x++) {
-				for (int z = 0; z < 16; z++){
-					std::cout << (int)chnks->blocks[(((y * 16) + z) * 16) + x] << " ";
-				}
-				std::cout << std::endl;
-			}
-			std::cout << std::endl;
-			std::cout << y << std::endl;
-		}
-
 		if (chnks->isEmpty()) {
 			delete chnks;
 		}

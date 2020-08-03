@@ -43,11 +43,11 @@ namespace Minecraft::Internal {
 		//State 7 = forward right
 
 		int run_state = -1;
-		if ( (Utilities::KeyPressed(GLFW_KEY_W) || Utilities::KeyHold(GLFW_KEY_W) || Utilities::KeyPressed(PSP_CTRL_UP) || Utilities::KeyHold(PSP_CTRL_UP)) && !(Utilities::KeyPressed(GLFW_KEY_S) || Utilities::KeyHold(GLFW_KEY_S) || Utilities::KeyPressed(PSP_CTRL_DOWN) || Utilities::KeyHold(PSP_CTRL_DOWN))) {
-			if ((Utilities::KeyPressed(GLFW_KEY_A) || Utilities::KeyHold(GLFW_KEY_A) || Utilities::KeyPressed(PSP_CTRL_LEFT) || Utilities::KeyHold(PSP_CTRL_LEFT)) && !(Utilities::KeyPressed(GLFW_KEY_D) || Utilities::KeyHold(GLFW_KEY_D) || Utilities::KeyPressed(PSP_CTRL_RIGHT) || Utilities::KeyHold(PSP_CTRL_RIGHT))) {
+		if ( (Utilities::KeyPressed(GLFW_KEY_W) || Utilities::KeyHold(GLFW_KEY_W))  && !(Utilities::KeyPressed(GLFW_KEY_S) || Utilities::KeyHold(GLFW_KEY_S))) {
+			if ( (Utilities::KeyPressed(GLFW_KEY_A) || Utilities::KeyHold(GLFW_KEY_A)) && !(Utilities::KeyPressed(GLFW_KEY_D) || Utilities::KeyHold(GLFW_KEY_D))) {
 				run_state = 1;
 			}
-			else if (!(Utilities::KeyPressed(GLFW_KEY_A) || Utilities::KeyHold(GLFW_KEY_A) || Utilities::KeyPressed(PSP_CTRL_LEFT) || Utilities::KeyHold(PSP_CTRL_LEFT)) && (Utilities::KeyPressed(GLFW_KEY_D) || Utilities::KeyHold(GLFW_KEY_D) || Utilities::KeyPressed(PSP_CTRL_RIGHT) || Utilities::KeyHold(PSP_CTRL_RIGHT))) {
+			else if (!(Utilities::KeyPressed(GLFW_KEY_A) || Utilities::KeyHold(GLFW_KEY_A)) && (Utilities::KeyPressed(GLFW_KEY_D) || Utilities::KeyHold(GLFW_KEY_D)) ) {
 				run_state = 7;
 			}
 			else {
@@ -55,11 +55,11 @@ namespace Minecraft::Internal {
 			}
 		}
 
-		if ( !(Utilities::KeyPressed(GLFW_KEY_W) || Utilities::KeyHold(GLFW_KEY_W) || Utilities::KeyPressed(PSP_CTRL_UP) || Utilities::KeyHold(PSP_CTRL_UP)) && (Utilities::KeyPressed(GLFW_KEY_S) || Utilities::KeyHold(GLFW_KEY_S) || Utilities::KeyPressed(PSP_CTRL_DOWN) || Utilities::KeyHold(PSP_CTRL_DOWN))) {
-			if ((Utilities::KeyPressed(GLFW_KEY_A) || Utilities::KeyHold(GLFW_KEY_A) || Utilities::KeyPressed(PSP_CTRL_LEFT) || Utilities::KeyHold(PSP_CTRL_LEFT)) && !(Utilities::KeyPressed(GLFW_KEY_D) || Utilities::KeyHold(GLFW_KEY_D) || Utilities::KeyPressed(PSP_CTRL_RIGHT) || Utilities::KeyHold(PSP_CTRL_RIGHT))) {
+		if ( !(Utilities::KeyPressed(GLFW_KEY_W) || Utilities::KeyHold(GLFW_KEY_W)) && (Utilities::KeyPressed(GLFW_KEY_S) || Utilities::KeyHold(GLFW_KEY_S))) {
+			if ((Utilities::KeyPressed(GLFW_KEY_A) || Utilities::KeyHold(GLFW_KEY_A)) && !(Utilities::KeyPressed(GLFW_KEY_D) || Utilities::KeyHold(GLFW_KEY_D))) {
 				run_state = 3;
 			}
-			else if (!(Utilities::KeyPressed(GLFW_KEY_A) || Utilities::KeyHold(GLFW_KEY_A) || Utilities::KeyPressed(PSP_CTRL_LEFT) || Utilities::KeyHold(PSP_CTRL_LEFT)) && (Utilities::KeyPressed(GLFW_KEY_D) || Utilities::KeyHold(GLFW_KEY_D) || Utilities::KeyPressed(PSP_CTRL_RIGHT) || Utilities::KeyHold(PSP_CTRL_RIGHT))) {
+			else if (!(Utilities::KeyPressed(GLFW_KEY_A) || Utilities::KeyHold(GLFW_KEY_A)) && (Utilities::KeyPressed(GLFW_KEY_D) || Utilities::KeyHold(GLFW_KEY_D))) {
 				run_state = 5;
 			}
 			else {
@@ -69,10 +69,10 @@ namespace Minecraft::Internal {
 		
 		//So we aren't moving forward/backwards, just strafing
 		if(run_state == -1){
-			if ((Utilities::KeyPressed(GLFW_KEY_A) || Utilities::KeyHold(GLFW_KEY_A) || Utilities::KeyPressed(PSP_CTRL_LEFT) || Utilities::KeyHold(PSP_CTRL_LEFT)) && !(Utilities::KeyPressed(GLFW_KEY_D) || Utilities::KeyHold(GLFW_KEY_D) || Utilities::KeyPressed(PSP_CTRL_RIGHT) || Utilities::KeyHold(PSP_CTRL_RIGHT))) {
+			if ((Utilities::KeyPressed(GLFW_KEY_A) || Utilities::KeyHold(GLFW_KEY_A)) && !(Utilities::KeyPressed(GLFW_KEY_D) || Utilities::KeyHold(GLFW_KEY_D))) {
 				run_state = 2;
 			}
-			else if (!(Utilities::KeyPressed(GLFW_KEY_A) || Utilities::KeyHold(GLFW_KEY_A) || Utilities::KeyPressed(PSP_CTRL_LEFT) || Utilities::KeyHold(PSP_CTRL_LEFT)) && (Utilities::KeyPressed(GLFW_KEY_D) || Utilities::KeyHold(GLFW_KEY_D) || Utilities::KeyPressed(PSP_CTRL_RIGHT) || Utilities::KeyHold(PSP_CTRL_RIGHT))) {
+			else if (!(Utilities::KeyPressed(GLFW_KEY_A) || Utilities::KeyHold(GLFW_KEY_A)) && (Utilities::KeyPressed(GLFW_KEY_D) || Utilities::KeyHold(GLFW_KEY_D))) {
 				run_state = 6;
 			}
 		}
@@ -130,14 +130,21 @@ namespace Minecraft::Internal {
 			break;
 		}
 
-		x += velocity.x * dt * 4.317;
-		z += velocity.y * dt * 4.317;
-
-
-
-
 		//Rotation
 		glm::vec2 pos = Utilities::getCursorPos();
+
+		if (pos == glm::vec2(-1, -1)) {
+			if (Utilities::KeyPressed(PSP_CTRL_ANALOG_X)) {
+				velocity.x += 1 * Utilities::KeyStrength(PSP_CTRL_ANALOG_X);
+			}
+			if (Utilities::KeyPressed(PSP_CTRL_ANALOG_Y)) {
+				velocity.y += 1 * Utilities::KeyStrength(PSP_CTRL_ANALOG_Y);
+			}
+			positionChanged = true;
+		}
+
+		x += velocity.x * dt * 4.317;
+		z += velocity.y * dt * 4.317;
 		
 		if(pos != glm::vec2(-1,-1)){
 #if CURRENT_PLATFORM != PLATFORM_PSP

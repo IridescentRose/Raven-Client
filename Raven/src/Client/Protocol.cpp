@@ -207,6 +207,8 @@ namespace Minecraft::Protocol {
 	}
 	
 	int chunk_data_handler(PacketIn* p) { 
+		
+		
 		int32_t x, z;
 		p->buffer->ReadBEInt32(x);
 		p->buffer->ReadBEInt32(z);
