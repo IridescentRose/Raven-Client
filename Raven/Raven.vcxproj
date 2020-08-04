@@ -154,6 +154,7 @@
     <ClCompile Include="src\Client\Client.cpp" />
     <ClCompile Include="src\Client\Player\Player.cpp" />
     <ClCompile Include="src\Client\Protocol.cpp" />
+    <ClCompile Include="src\Client\Rendering\Light.cpp" />
     <ClCompile Include="src\Client\Rendering\Sky.cpp" />
     <ClCompile Include="src\Client\World\World.cpp" />
     <ClCompile Include="src\Common\Translation.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="src\Client\Client.h" />
     <ClInclude Include="src\Client\Player\Player.h" />
     <ClInclude Include="src\Client\Protocol.h" />
+    <ClInclude Include="src\Client\Rendering\Light.h" />
     <ClInclude Include="src\Client\Rendering\Sky.h" />
     <ClInclude Include="src\Client\World\World.h" />
     <ClInclude Include="src\Common\Translation.h" />

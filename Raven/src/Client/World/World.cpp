@@ -19,6 +19,10 @@ namespace Minecraft::Internal {
 		timeData.age = 0;
 		timeData.timeOfDay = 0;
 		chunkMap.clear();
+		sun_tex = GFX::g_TextureManager->loadTex("./assets/minecraft/textures/environment/sun.png", GFX_FILTER_NEAREST, GFX_FILTER_NEAREST, false);
+		sun = new Rendering::SkyLight(sun_tex);
+		mun_tex = GFX::g_TextureManager->loadTex("./assets/minecraft/textures/environment/moon.png", GFX_FILTER_NEAREST, GFX_FILTER_NEAREST, false);
+		mun = new Rendering::SkyLight(mun_tex);
 	}
 	void World::cleanup()
 	{
@@ -47,11 +51,16 @@ namespace Minecraft::Internal {
 		timeData.age++;
 		timeData.timeOfDay++;
 		sky->Update(timeData.timeOfDay);
+		sun->Update(timeData.timeOfDay);
+		mun->Update(timeData.timeOfDay + 12000);
 	}
 	void World::draw()
 	{
 		GFX::g_RenderCore->set3DMode();
 		sky->Draw(player->getCamera());
+
+		sun->Draw(player->getCamera());
+		mun->Draw(player->getCamera());
 
 		GFX::g_RenderCore->setDefault2DMode();
 		player->draw();

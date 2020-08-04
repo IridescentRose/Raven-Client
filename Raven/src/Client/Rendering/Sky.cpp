@@ -160,10 +160,12 @@ namespace Minecraft::Rendering {
 #if CURRENT_PLATFORM == PLATFORM_PSP
 		sceGuDisable(GU_TEXTURE_2D);
 		sceGuEnable(GU_BLEND);
+		sceGuDisable(GU_DEPTH_TEST);
 #else
 		glDisable(GL_TEXTURE_2D);
 		glEnable(GL_BLEND);
 		glDisable(GL_CULL_FACE);
+		glDisable(GL_DEPTH_TEST);
 #endif
 
 		glm::vec3 pos = cam->pos;
@@ -184,7 +186,9 @@ namespace Minecraft::Rendering {
 #if CURRENT_PLATFORM == PLATFORM_PSP
 		sceGuEnable(GU_TEXTURE_2D);
 		sceGuEnable(GU_BLEND);
+		sceGuDisable(GU_ENABLE_TEST);
 #else
+		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_TEXTURE_2D);
 		glEnable(GL_BLEND);
 		glEnable(GL_CULL_FACE);

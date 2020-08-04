@@ -84,6 +84,19 @@ namespace Minecraft::Internal {
 		//XZ 
 		glm::vec2 velocity = { 0, 0 };
 
+		//Rotation
+		glm::vec2 pos = Utilities::getCursorPos();
+
+		if (pos == glm::vec2(-1, -1)) {
+			if (Utilities::KeyPressed(PSP_CTRL_ANALOG_X)) {
+				velocity.x += 1 * Utilities::KeyStrength(PSP_CTRL_ANALOG_X);
+			}
+			if (Utilities::KeyPressed(PSP_CTRL_ANALOG_Y)) {
+				velocity.y += 1 * Utilities::KeyStrength(PSP_CTRL_ANALOG_Y);
+			}
+			positionChanged = true;
+		}
+
 		switch(run_state){
 		case -1:
 		default:
@@ -128,19 +141,6 @@ namespace Minecraft::Internal {
 			velocity.x += -glm::cos(glm::radians(yaw));
 			velocity.y += -glm::sin(glm::radians(yaw));
 			break;
-		}
-
-		//Rotation
-		glm::vec2 pos = Utilities::getCursorPos();
-
-		if (pos == glm::vec2(-1, -1)) {
-			if (Utilities::KeyPressed(PSP_CTRL_ANALOG_X)) {
-				velocity.x += 1 * Utilities::KeyStrength(PSP_CTRL_ANALOG_X);
-			}
-			if (Utilities::KeyPressed(PSP_CTRL_ANALOG_Y)) {
-				velocity.y += 1 * Utilities::KeyStrength(PSP_CTRL_ANALOG_Y);
-			}
-			positionChanged = true;
 		}
 
 		x += velocity.x * dt * 4.317;

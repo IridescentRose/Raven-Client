@@ -4,7 +4,7 @@
 #include "../Rendering/Sky.h"
 #include <Utilities/Timer.h>
 #include "../Chunk/ChunkColumn.h"
-
+#include "../Rendering/Light.h"
 
 namespace Minecraft::Internal{
 
@@ -33,6 +33,11 @@ namespace Minecraft::Internal{
 		Rendering::Sky* sky;
 		Utilities::Timer timer;
 		std::map<mc::Vector3i, ChunkColumn*> chunkMap;
+		Rendering::SkyLight* sun;
+		unsigned int sun_tex;
+
+		Rendering::SkyLight* mun;
+		unsigned int mun_tex;
 	private:
 
 	};
