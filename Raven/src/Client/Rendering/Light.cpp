@@ -42,7 +42,7 @@ namespace Minecraft::Rendering {
 
 	void SkyLight::Update(uint64_t timeOfDay)
 	{
-		degrees = (1.0f - timeOfDay / 24000.0f) * 360.0f;
+		degrees = (1.0f - (timeOfDay + 1000) / 24000.0f) * 360.0f;
 	}
 
 	void SkyLight::Draw(GFX::Render3D::Camera* cam)
@@ -51,24 +51,22 @@ namespace Minecraft::Rendering {
 
 		glm::vec3 pos = cam->pos;
 		cam->pos = { 0, 0, 0 };
-
+		
 		cam->update();
 		GFX::g_RenderCore->set3DMode();
-
-		cam->update();
-		GFX::g_RenderCore->set3DMode();
-
-		GFX::pushMatrix();
+		
+		//GFX::pushMatrix();
 		GFX::rotateModelMatrix({ 0.0f, 270.0f, 0.0f });
-		GFX::pushMatrix();
+		//GFX::pushMatrix();
 		GFX::rotateModelMatrix({ degrees, 0.0f, 0.0f });
 		GFX::translateModelMatrix({ 0.0f, 0.0f, 256.0f });
-
+		
 		face.draw();
-
-		GFX::popMatrix();
-		GFX::popMatrix();
-
+		GFX::clearModelMatrix();
+		
+		//GFX::popMatrix();
+		//GFX::popMatrix();
+		
 		cam->pos = pos;
 		cam->update();
 		GFX::g_RenderCore->set3DMode();

@@ -10,6 +10,7 @@ src/Common/Translation.o \
 src/Client/Protocol.o \
 src/Client/World/World.o \
 src/Client/Rendering/Sky.o \
+src/Client/Rendering/Light.o \
 src/Client/Chunk/ChunkColumn.o \
 src/Client/Chunk/ChunkSection.o \
 src/Client/Player/Player.o

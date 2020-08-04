@@ -186,7 +186,7 @@ namespace Minecraft::Rendering {
 #if CURRENT_PLATFORM == PLATFORM_PSP
 		sceGuEnable(GU_TEXTURE_2D);
 		sceGuEnable(GU_BLEND);
-		sceGuDisable(GU_ENABLE_TEST);
+		sceGuDisable(GU_DEPTH_TEST);
 #else
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_TEXTURE_2D);

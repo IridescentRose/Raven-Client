@@ -174,7 +174,6 @@ void MenuState::update(GameStateManager* st)
 	double dt =	Utilities::g_AppTimer.deltaTime();
 	cam->rot.y += dt * (360.0f / 180.0f);
 	cam->rot.x = sinf((cam->rot.y + 90) / 180 * 3.14159) * 30.0f + 5.0f;
-	std::cout << "ROT: " << cam->rot.x << " " << cam->rot.y << std::endl;
 	cam->update();
 	GFX::g_RenderCore->bindCamera(cam);
 
