@@ -95,7 +95,18 @@ namespace Minecraft::Protocol {
 	int entity_status_handler(PacketIn* p) { std::cout << "WARNING ENTITY_STATUS TRIGGERED" << std::endl; return 0; }
 	int nbt_query_response_handler(PacketIn* p) { std::cout << "WARNING NBT_QUERY_RESPONSE TRIGGERED" << std::endl; return 0; }
 	int explosion_handler(PacketIn* p) { std::cout << "WARNING EXPLOSION TRIGGERED" << std::endl; return 0; }
-	int unload_chunk_handler(PacketIn* p) { std::cout << "WARNING UNLOAD_CHUNK TRIGGERED" << std::endl; return 0; }
+	
+	int unload_chunk_handler(PacketIn* p) { 
+		int32_t x, z;
+
+		p->buffer->ReadBEInt32(x);
+		p->buffer->ReadBEInt32(z);
+		std::cout << "Requested Unload @ " << x << " " << z << std::endl;
+		delete Internal::g_World->chunkMap[mc::Vector3i(x, z, 0)];
+		Internal::g_World->chunkMap.erase(mc::Vector3i(x, z, 0));
+
+		return 0; 
+	}
 	int change_game_state_handler(PacketIn* p) { std::cout << "WARNING CHANGE_GAME_STATE TRIGGERED" << std::endl; return 0; }
 	
 	int keep_alive_handler(PacketIn* p) { 
