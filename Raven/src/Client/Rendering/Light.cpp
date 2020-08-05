@@ -47,7 +47,6 @@ namespace Minecraft::Rendering {
 
 	void SkyLight::Draw(GFX::Render3D::Camera* cam)
 	{
-		GFX::g_TextureManager->bindTex(texture);
 
 		glm::vec3 pos = cam->pos;
 		cam->pos = { 0, 0, 0 };
@@ -60,6 +59,7 @@ namespace Minecraft::Rendering {
 		//GFX::pushMatrix();
 		GFX::rotateModelMatrix({ degrees, 0.0f, 0.0f });
 		GFX::translateModelMatrix({ 0.0f, 0.0f, 256.0f });
+		GFX::g_TextureManager->bindTex(texture);
 		
 		face.draw();
 		GFX::clearModelMatrix();

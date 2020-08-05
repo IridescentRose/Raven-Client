@@ -355,6 +355,6 @@ Debug
 *.SFO
 *.prx
 *.elf
-
+*.exe
 include
 lib
