@@ -101,7 +101,6 @@ namespace Minecraft::Protocol {
 
 		p->buffer->ReadBEInt32(x);
 		p->buffer->ReadBEInt32(z);
-		std::cout << "Requested Unload @ " << x << " " << z << std::endl;
 		delete Internal::g_World->chunkMap[mc::Vector3i(x, z, 0)];
 		Internal::g_World->chunkMap.erase(mc::Vector3i(x, z, 0));
 
