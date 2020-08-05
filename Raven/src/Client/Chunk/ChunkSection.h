@@ -2,6 +2,7 @@
 #include <map>
 #include <mclib/common/Vector.h>
 #include "ChunkDefines.h"
+#include "ChunkMesh.h"
 
 namespace Minecraft::Internal::Chunks {
 	class ChunkSection {
@@ -24,6 +25,7 @@ namespace Minecraft::Internal::Chunks {
 		uint8_t* blk_light;
 		int cX, cZ;
 		bool empty;
+		ChunkMesh* mesh;
 	private:
 		int cY;
 

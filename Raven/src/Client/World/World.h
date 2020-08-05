@@ -25,6 +25,7 @@ namespace Minecraft::Internal{
 
 		void update();
 		void tickUpdate();
+		void chunkGenUpdate();
 		void draw();
 
 		TimeDataStruct timeData;
@@ -38,6 +39,7 @@ namespace Minecraft::Internal{
 
 		Rendering::SkyLight* mun;
 		unsigned int mun_tex;
+		glm::ivec2 lastPos;
 	private:
 
 	};

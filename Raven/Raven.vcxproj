@@ -150,6 +150,7 @@
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\Client\Chunk\ChunkColumn.cpp" />
+    <ClCompile Include="src\Client\Chunk\ChunkMesh.cpp" />
     <ClCompile Include="src\Client\Chunk\ChunkSection.cpp" />
     <ClCompile Include="src\Client\Client.cpp" />
     <ClCompile Include="src\Client\Player\Player.cpp" />
@@ -168,6 +169,7 @@
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\Client\Chunk\ChunkColumn.h" />
     <ClInclude Include="src\Client\Chunk\ChunkDefines.h" />
+    <ClInclude Include="src\Client\Chunk\ChunkMesh.h" />
     <ClInclude Include="src\Client\Chunk\ChunkSection.h" />
     <ClInclude Include="src\Client\Client.h" />
     <ClInclude Include="src\Client\Player\Player.h" />

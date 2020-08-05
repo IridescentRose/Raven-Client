@@ -16,6 +16,7 @@ namespace Minecraft::Internal::Chunks {
 		blocks = (BlockID*)malloc(8192);
 
 		sky_light = (uint8_t*)malloc(2048);
+		mesh = NULL;
 		blk_light = (uint8_t*)malloc(2048);
 	}
 

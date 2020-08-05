@@ -202,7 +202,7 @@ namespace Minecraft::Protocol {
 					buf->ReadBEUInt8(b);
 					sect->sky_light[i] = b;
 				}
-
+				sect->empty = false;
 				chunk->addSection(sect);
 			}
 		}
@@ -236,11 +236,12 @@ namespace Minecraft::Protocol {
 
 		if (newChunk) {
 			chk = new Internal::Chunks::ChunkColumn(x, z);
+			Internal::g_World->chunkMap.emplace(mc::Vector3i(x, z, 0), chk);
 		}
 		else {
 			chk = Internal::g_World->chunkMap[mc::Vector3i(x, z, 0)];
 		}
-
+		
 		//Read
 		readChunkColumn(chk, newChunk, mask, p->buffer);
 
