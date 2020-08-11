@@ -2,14 +2,14 @@
 
 namespace Minecraft::Internal::Chunks {
 
-	const float frontFace[12] = {
+	const float backFace[12] = {
 		0, 0, 1, 
 		1, 0, 1, 
 		1, 1, 1, 
 		0, 1, 1,
 	};
-
-	const float backFace[12] = {
+	
+	const float frontFace[12] = {
 		1, 0, 0,
 		0, 0, 0, 
 		0, 1, 0, 
@@ -22,7 +22,7 @@ namespace Minecraft::Internal::Chunks {
 		0, 1, 1, 
 		0, 1, 0,
 	};
-
+	
 	const float rightFace[12] = {
 		1, 0, 1,
 		1, 0, 0,
@@ -31,17 +31,17 @@ namespace Minecraft::Internal::Chunks {
 	};
 
 	const float topFace[12] = {
-		0, 1, 1, 
+		0, 1, 0,
+		0, 1, 1,
 		1, 1, 1,
 		1, 1, 0,
-		0, 1, 0,
 	};
 
-	const float bottomFace[12] = { 
+	const float bottomFace[12] = {
 		0, 0, 0,
-		1, 0, 0, 
-		1, 0, 1, 
-		0, 0, 1 
+		1, 0, 0,
+		1, 0, 1,
+		0, 0, 1,
 	};
 
 	ChunkMesh::ChunkMesh() {
@@ -57,35 +57,9 @@ namespace Minecraft::Internal::Chunks {
 	{
 		if(!chks->isFilled){
 			for (int y = 0; y < 16; y++) {
-
-				if (chks->layerFull[y]) {
-					//Check where above and below are.
-					int bw = y - 1;
-					
-					if (bw < 0 && below != NULL) {
-						if (below->layerFull[15]) {
-							continue;
-						}
-					}
-					else if (bw >= 0 && bw < 16) {
-						if (chks->layerFull[bw]) {
-							continue;
-						}
-					}
-
-					if (y == 15) {
-						//Check above
-						if (above != NULL) {
-							if (above->layerFull[0]) {
-								continue;
-							}
-						}
-					}
-				}
-
 				for (int z = 0; z < 16; z++) {
 					for (int x = 0; x < 16; x++) {
-						int idx = ((((y * CHUNK_SECTION_LENGTH) + z) * CHUNK_SECTION_LENGTH) + x);
+						int idx = (((y * CHUNK_SECTION_LENGTH) + z) * CHUNK_SECTION_LENGTH) + x;
 
 						uint16_t id = chks->blocks[idx];
 						glm::vec3 pos = { x, y, z };
@@ -219,12 +193,12 @@ namespace Minecraft::Internal::Chunks {
 			mesh.color.push_back(1.0f);
 			mesh.color.push_back(1.0f);
 
-			mesh.indices.push_back(3 + numFaces * 4);
-			mesh.indices.push_back(2 + numFaces * 4);
-			mesh.indices.push_back(1 + numFaces * 4);
-			mesh.indices.push_back(1 + numFaces * 4);
 			mesh.indices.push_back(0 + numFaces * 4);
+			mesh.indices.push_back(1 + numFaces * 4);
+			mesh.indices.push_back(2 + numFaces * 4);
+			mesh.indices.push_back(2 + numFaces * 4);
 			mesh.indices.push_back(3 + numFaces * 4);
+			mesh.indices.push_back(0 + numFaces * 4);
 
 		}
 	}

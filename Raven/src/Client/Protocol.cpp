@@ -147,9 +147,9 @@ namespace Minecraft::Protocol {
 				uint32_t dataArrayLen;
 				buf->ReadVarInt32(dataArrayLen);
 
-				uint64_t* dataArray = (uint64_t*)malloc(dataArrayLen);
+				uint64_t* dataArray = (uint64_t*)calloc(dataArrayLen * 8, 1);
 				
-				for (int i = 0; i < dataArrayLen / 8; i++) {
+				for (int i = 0; i < dataArrayLen; i++) {
 					uint64_t longboi;
 					buf->ReadBEUInt64(longboi);
 
@@ -162,6 +162,7 @@ namespace Minecraft::Protocol {
 					for (int blockZ = 0; blockZ < 16; blockZ++) {
 						for (int blockX = 0; blockX < 16; blockX++) {
 							int blockNumber = (((blockY * 16) + blockZ) * 16) + blockX;
+							
 							int startLong = (blockNumber * bitsPerBlock) / 64;
 							int startOffset = (blockNumber * bitsPerBlock) % 64;
 							int endLong = ((blockNumber + 1) * bitsPerBlock - 1) / 64;
@@ -189,7 +190,6 @@ namespace Minecraft::Protocol {
 						}
 					}
 				}
-
 
 				for (int i = 0; i < 2048; i++) {
 					uint8_t b;

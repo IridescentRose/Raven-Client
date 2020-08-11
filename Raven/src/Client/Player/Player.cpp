@@ -207,8 +207,8 @@ namespace Minecraft::Internal {
 			Protocol::PacketsOut::send_player_position_look();
 		}
 
-		cam->pos = { x, y, z };
-		cam->rot = { pitch, yaw, 0.0f };
+		cam->pos = { x, y + 1.625, z };
+		cam->rot = { pitch, yaw + 180, 0.0f };
 		cam->update();
 
 		positionChanged = false;
