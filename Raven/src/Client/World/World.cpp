@@ -24,6 +24,8 @@ namespace Minecraft::Internal {
 		mun_tex = GFX::g_TextureManager->loadTex("./assets/minecraft/textures/environment/moon.png", GFX_FILTER_NEAREST, GFX_FILTER_NEAREST, false);
 		mun = new Rendering::SkyLight(mun_tex);
 		lastPos = { -1000, -1000 };
+
+		dirt_tex = GFX::g_TextureManager->loadTex("./assets/minecraft/textures/gui/options_background.png", GFX_FILTER_NEAREST, GFX_FILTER_NEAREST, false);
 	}
 	void World::cleanup()
 	{
@@ -76,49 +78,44 @@ namespace Minecraft::Internal {
 		//Needed
 		for (int x = topLeft.x; x <= botRight.x; x++) {
 			for (int z = topLeft.y; z <= botRight.y; z++) {
-				needed.push_back({ x, z, 0 });
-			}
-		}
+				
+				//One, it exists
+				if (chunkMap.find(mc::Vector3i(x, z, 0)) != chunkMap.end()) {
+					auto chunkStack = chunkMap[mc::Vector3i(x, z, 0)];
+					
+					//Now we gotta check if the section exists
+					for (int i = v.z - 2; i <= v.z + 2; i++) {
 
-		//Excess
-		for (auto& [pos, chunk] : chunkMap) {
-			bool need = false;
-			for (auto& v : needed) {
-				if (v == pos) {
-					//Is needed
-					need = true;
-				}
-			}
-		}
-
-		//Make new meshes - check if already exist
-		for (auto chk : needed) {
-			
-			//One, it exists
-			if (chunkMap.find(chk) != chunkMap.end()) {
-				auto chunkStack = chunkMap[chk];
-
-				//Now we gotta check if the section exists
-				for (int i = v.z - 2; i <= v.z + 2; i++) {
-
-					if (i >= 0 && i < 16) {
-						//Now we can expect results.
-						auto chunkSects = chunkStack->getSection(i);
-						if (chunkSects != NULL) {
-							//Okay so it exists
-							//Check if the mesh exists
-							if (chunkSects->mesh == NULL) {
-								std::cout << "GEN MESH" << std::endl;
-
-								chunkSects->mesh = new ChunkMesh();
+						if (i >= 0 && i < 16) {
+							//Now we can expect results.
+							if(chunkStack != nullptr){
+								auto chunkSects = chunkStack->getSection(i);
+								if (chunkSects != NULL) {
+									//Okay so it exists
+									//Check if the mesh exists
+						
+									if (!chunkSects->analytics) {
+										chunkSects->generateAnalytics();
+										continue;
+									}
+						
+									if (chunkSects->mesh == NULL) {
+										chunkSects->mesh = new ChunkMesh();
+										if (chunkMap[mc::Vector3i(x - 1, z, 0)] != nullptr) {
+											if (chunkMap[mc::Vector3i(x + 1, z, 0)] != nullptr)
+												if (chunkMap[mc::Vector3i(x, z - 1, 0)] != nullptr)
+													if (chunkMap[mc::Vector3i(x, z + 1, 0)] != nullptr)
+														chunkSects->mesh->generate(chunkSects, chunkStack->getSection(i + 1), chunkStack->getSection(i - 1), chunkMap[mc::Vector3i(x - 1, z, 0)]->getSection(i), chunkMap[mc::Vector3i(x + 1, z, 0)]->getSection(i), chunkMap[mc::Vector3i(x, z - 1, 0)]->getSection(i), chunkMap[mc::Vector3i(x, z + 1, 0)]->getSection(i));
+										}
+									}
+								}
 							}
 						}
 					}
-				}
 
+				}
 			}
 		}
-
 	}
 
 	void World::draw()
@@ -128,6 +125,19 @@ namespace Minecraft::Internal {
 
 		sun->Draw(player->getCamera());
 		mun->Draw(player->getCamera());
+
+		GFX::g_TextureManager->bindTex(dirt_tex);
+		for (auto [vec, chk] : chunkMap) {
+			if (chk != nullptr) {
+				for (int i = 0; i < 16; i++) {
+					auto r = chk->getSection(i);
+
+					if (r != nullptr) {
+						r->draw();
+					}
+				}
+			}
+		}
 
 		GFX::g_RenderCore->setDefault2DMode();
 		player->draw();

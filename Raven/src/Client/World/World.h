@@ -36,6 +36,8 @@ namespace Minecraft::Internal{
 		std::map<mc::Vector3i, ChunkColumn*> chunkMap;
 		Rendering::SkyLight* sun;
 		unsigned int sun_tex;
+		unsigned int dirt_tex;
+
 
 		Rendering::SkyLight* mun;
 		unsigned int mun_tex;
